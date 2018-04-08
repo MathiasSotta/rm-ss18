@@ -1,0 +1,64 @@
+<!doctype html>
+<meta charset="UTF-8">
+<div style="position: absolute; top: 50px; left: 50px;">
+    <canvas id="canvas" width="500" height="250">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</div>
+<form style="position: absolute; left: 55px; top: 25px">Dein Text:
+    <input id="inputBox" placeholder="Text einfügen">
+</form>
+
+<script type="text/javascript">
+    window.addEventListener('load', canvasApp, false);
+
+    function canvasApp() {
+        if (!document.createElement('canvas').getContext) {
+            return;
+        }
+
+        document.getElementById("inputBox").addEventListener("keyup", onInputChange);
+
+        var theCanvas = document.getElementById('canvas');
+        var context = theCanvas.getContext('2d');
+        var text = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren.";
+
+        drawCanvas();
+
+        function drawCanvas() {
+            var maxWidth = 350;
+            var lineHeight = 25;
+            var x = (theCanvas.width - maxWidth) / 2;
+            var y = lineHeight;
+
+            context.clearRect(0, 0, theCanvas.width, theCanvas.height);
+            context.font = '16px Verdana';
+
+            wrapText(context, text, x, y, maxWidth, lineHeight);
+        }
+
+        function onInputChange(e) {
+            text = e.target.value;
+            drawCanvas();
+        }
+
+        function wrapText(context, text, x, y, maxWidth, lineHeight) {
+            var words = text.split(' ');
+            var line = '';
+
+            for (var i = 0; i < words.length; i++) {
+                var metricsLine = line + words[i] + ' ';
+                var metrics = context.measureText(metricsLine);
+                if (metrics.width > maxWidth && i > 0) {
+                    context.fillText(line, x, y);
+                    line = words[i] + ' ';
+                    y += lineHeight;
+                } else {
+                    line = metricsLine;
+                }
+            }
+            context.fillText(line, x, y);
+        }
+    }
+
+</script>
