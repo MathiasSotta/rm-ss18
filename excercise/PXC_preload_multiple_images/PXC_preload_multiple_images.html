@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PXC - Bilder vorladen</title>
+
+
+    <script type="text/javascript">
+        window.addEventListener('load', canvasApp, false);
+
+        function canvasApp() {
+            if (!document.createElement('canvas').getContext) {
+                return;
+            }
+
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');
+
+            var imageSources = ['image_0.jpg', 'creature_1.png', 'creature_2.png', 'creature_3.png'];
+            var images = new Array();
+
+            //Ladevorgang mit erstem Bild initialisieren
+            loadImage(0);
+
+            function loadImage(id) {
+                images[id] = new Image();
+                images[id].addEventListener('load', onImageLoaded);
+                images[id].src = imageSources[id];
+            }
+
+            function onImageLoaded(e) {
+                console.log("onImageLoaded with ID: " + (images.length - 1));
+
+                if (images.length < imageSources.length) {
+                    loadImage(images.length);
+                } else {
+                    onPreloadComplete();
+                }
+            }
+
+            function onPreloadComplete() {
+                console.log("onPreloadComplete");
+                drawCanvas();
+            }
+
+            function drawCanvas() {
+                x = 0;
+                y = 0;
+                dw = 80;
+                dh = 120;
+
+                for (i in images) {
+                    context.drawImage(images[i], x, y, dw, dh);
+
+                }
+            }
+
+        }
+
+
+    </script>
+</head>
+<body>
+<div style="position: absolute; top: 50px; left: 50px;">
+    <canvas id="canvas" width="800" height="800">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</div>
+</body>
+</html>
