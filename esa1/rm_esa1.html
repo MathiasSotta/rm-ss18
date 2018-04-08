@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>THJ ESA</title>
+    <script type="text/javascript">
+        window.addEventListener('load', canvasApp, false);
+
+        function canvasApp() {
+            if (!document.createElement('canvas').getContext) {
+                return;
+            }
+
+            //Event Listener für Änderungen im Eingabefeld registrieren
+            document.getElementById("inputBox").addEventListener("keyup", onInputChange);
+
+            //Event Listener für Änderungen der Schriftgröße hinzufügen
+            document.getElementById("sizeInput").addEventListener("change", onTextSizeChange);
+
+            //alle weiteren Listener auf das CHANGE Event setzen
+            //Event Listener für Änderungen der Schriftart hinzufügen
+            document.getElementById("fontFaceSelect").addEventListener("change", onFontFaceChange);
+
+            //Event Listener für Änderungen des Scriftgewichts hinzufügen
+            document.getElementById("fontWeightSelect").addEventListener("change", onFontWeightChange);
+
+            //Event Listener für Änderungen des Schriftstils hinzufügen
+            document.getElementById("fontStyleSelect").addEventListener("change", onFontStyleChange);
+
+            //Event Listener für Änderungen der Schriftfarbe hinzufügen
+            document.getElementById("fontColor").addEventListener("change", onFontColorChange);
+
+            //Canvas Referenzen speichern
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');
+
+            //Initialwerte definieren, können durch Benutzer geändert werden
+            var text = "Dies ist ein Dummytext";
+            var fontSize = "50";
+            var fontFace = "Verdana";
+            var fontWeight = "normal";
+            var fontStyle = "normal";
+            var textColor = "#000000";
+
+
+            // Maßeinheit für Schriftgröße
+            var fntMs = "px";
+
+            drawCanvas();
+
+            function drawCanvas() {
+                var maxWidth = 480;
+                var lineHeight = Number(fontSize) + 5;
+                var x = (theCanvas.width - maxWidth) / 2;
+                var y = lineHeight;
+                context.clearRect(0, 0, theCanvas.width, theCanvas.height);
+
+                //Füllfarbe setzen
+                context.fillStyle = textColor;
+
+                //Schriftoptionen dynamisch setzen
+                context.font = fontStyle + " " + fontWeight + " " + fontSize + fntMs + " " + fontFace;
+
+                //context.font = "italic normal 50px Verdana";
+
+                //Text auf den Canvas zeichnen
+                wrapText(context, text, x, y, maxWidth, lineHeight);
+            }
+
+            //Event Handlers
+            function onInputChange(e) {
+                text = e.target.value;
+                drawCanvas();
+            }
+
+            function onTextSizeChange(e) {
+                fontSize = e.target.value;
+                drawCanvas();
+            }
+
+            function onFontFaceChange(e) {
+                fontFace = e.target.value;
+                drawCanvas();
+            }
+
+            function onFontStyleChange(e) {
+                fontStyle = e.target.value;
+                drawCanvas();
+            }
+
+            function onFontWeightChange(e) {
+                fontWeight = e.target.value;
+                drawCanvas();
+            }
+
+            function onFontColorChange(e) {
+                textColor = e.target.value;
+                drawCanvas();
+            }
+
+            function wrapText(context, text, x, y, maxWidth, lineHeight) {
+                var words = text.split(' ');
+                var line = '';
+
+                for (var i = 0; i < words.length; i++) {
+                    var metricsLine = line + words[i] + ' ';
+                    var metrics = context.measureText(metricsLine);
+                    if (metrics.width > maxWidth && i > 0) {
+                        context.fillText(line, x, y);
+                        line = words[i] + ' ';
+                        y += lineHeight;
+                    } else {
+                        line = metricsLine;
+                    }
+                }
+                context.fillText(line, x, y);
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div style="position: absolute; top: 50px; left: 50px; border: 1px dashed;">
+    <canvas id="canvas" width="500" height="250">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+    <form style="margin: 10px 0 10px 10px">
+        Dein Text: <input size="60" id="inputBox" placeholder="Text einfügen">
+        <br>
+        <br>
+        Schriftgröße: <input type="range" id="sizeInput"
+                             min="0"
+                             max="100"
+                             step="1"
+                             value="50"/>
+
+        Schriftart: <select id="fontFaceSelect">
+        <option value="Verdana">Verdana</option>
+        <option value="Arial">Arial</option>
+        <option value="serif">serif</option>
+        <option value="fantasy">fantasy</option>
+        <option value="monospace">monospace</option>
+    </select>
+        <br><br>
+        Schriftgewicht: <select id="fontWeightSelect">
+        <option value="normal">normal</option>
+        <option value="bold">fett</option>
+
+    </select>
+        Schriftstil: <select id="fontStyleSelect">
+        <option value="normal">normal</option>
+        <option value="italic">kursiv</option>
+    </select>
+        Schriftfarbe: <input type="color" id="fontColor">
+        <br>
+
+    </form>
+</div>
+
+</body>
+</html>
