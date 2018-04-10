@@ -44,7 +44,7 @@
 
 
             // Maßeinheit für Schriftgröße
-            var fntMs = "px";
+            var fontUnit = "px";
 
             drawCanvas();
 
@@ -59,9 +59,7 @@
                 context.fillStyle = textColor;
 
                 //Schriftoptionen dynamisch setzen
-                context.font = fontStyle + " " + fontWeight + " " + fontSize + fntMs + " " + fontFace;
-
-                //context.font = "italic normal 50px Verdana";
+                context.font = fontStyle + " " + fontWeight + " " + fontSize + fontUnit + " " + fontFace;
 
                 //Text auf den Canvas zeichnen
                 wrapText(context, text, x, y, maxWidth, lineHeight);
