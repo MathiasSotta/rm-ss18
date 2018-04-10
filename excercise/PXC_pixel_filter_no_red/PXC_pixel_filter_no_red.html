@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PXC - Rotwert löschen</title>
+
+    <!DOCTYPE html>
+    <html>
+
+    <script type="text/javascript">
+        window.addEventListener('load', canvasApp, false);
+
+        function canvasApp() {
+            if (!document.createElement('canvas').getContext) {
+                return;
+            }
+
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');
+            var image = new Image();
+            image.addEventListener('load', onImageLoaded);
+            image.src = 'colored.jpg';
+
+            var imgWidth;
+            var imgHeight;
+
+            function onImageLoaded(e) {
+                imgWidth = image.width;
+                imgHeight = image.height;
+                drawCanvas();
+            }
+
+
+            function drawCanvas() {
+                //Bild in Position 0, 0 rendern
+                context.drawImage(image, 0, 0);
+
+                // rechte Hälfte des Kontexts in imgData laden
+                var imgData = context.getImageData(imgWidth / 2, 0, imgWidth / 2, imgHeight);
+
+                // data-Array in 4er-Schritten durchlaufen
+                for (var i = 3; i < imgData.data.length; i+=4 ) {
+                    //Rot-Wert auf 0 setzen
+                    //debugger;
+                    //imgData.data[i] = 0;
+                    imgData.data[i] = parseInt(255 * 0.3);
+
+                }
+
+                // ImageData mit Filter wieder in Kontext setzen
+                context.putImageData(imgData, imgWidth / 2, 0);
+            }
+
+        }
+
+
+    </script>
+</head>
+<body>
+<div style="position: absolute; top: 0px; left: 0px;">
+    <canvas id="canvas" width="615" height="410" style="border:1px solid #d3d3d3;">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</div>
+
+</body>
+</html>

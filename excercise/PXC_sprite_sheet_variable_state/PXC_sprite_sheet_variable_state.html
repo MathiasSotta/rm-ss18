@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PXC -Character Animation</title>
+
+
+    <script type="text/javascript">
+        window.addEventListener('load', canvasApp, false);
+
+function canvasApp() {
+    if (!document.createElement('canvas').getContext) {
+        return;
+    }
+
+    var theCanvas = document.getElementById('canvas');
+    var context = theCanvas.getContext('2d');
+
+    var spriteSheet = new Image();
+
+    spriteSheet.addEventListener('load', onImageLoaded);
+    spriteSheet.src = 'character_spritesheet.png';
+
+    var animationStates = [
+        "stance", "hop_front", "hop_straight", "move_slow",   //erste Zeile
+        "move", "attack_low", "attack_high", "block_low",    //zweite Zeile
+        "block_high", "hit", "die", "crit-die"              //dritte Zeile
+    ];
+
+    //Breite und Höhe eines Sprites
+    var spriteSize = 128;
+
+    //16 Sprites pro Zeile
+    var columns = 16;
+    //3 Reihen
+    var rows = 3;
+
+    //Anzahl der Sprites pro Animation State
+    var numFramesPerState = 4;
+
+    //aktueller Animation State -> 0 = Grundhaltung
+    var curState = 7;
+
+    //neuen State abspielen
+    var newState = true;
+
+    //aktueller frameID (0-47)
+    var frameID = curState * numFramesPerState;
+
+    function drawCanvas() {
+        //draw a background so we can wee the Canvas edges
+        context.fillStyle = "#aaaaaa";
+        context.fillRect(0, 0, 200, 128);
+
+        //Spalte
+        var sourceX = (frameID % columns) * spriteSize;
+
+        //Zeile
+        var sourceY = Math.floor((frameID / columns)) * spriteSize;
+
+        context.drawImage(spriteSheet, sourceX, sourceY, spriteSize, spriteSize, 0, 0, spriteSize, spriteSize);
+
+        //nächster Animationsframe, falls neuer Animation State
+        if (newState) {
+            frameID++;
+        }
+
+        //wenn letzter Animation-Frame des aktuellen States erreicht, stoppe Animation
+        if (frameID == (curState + 1) * numFramesPerState && newState) {
+            newState = false;
+            //Am Ende der Action auf Grundhaltung
+            frameID = 0;
+        }
+    }
+
+    document.onkeydown = function (event) {
+        //Key Codes für 12 Actions   -> 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, q, w
+        var actionKeyCodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 81, 87];
+
+        for (var i = 0; i < actionKeyCodes.length; i++) {
+            if (actionKeyCodes[i] == event.keyCode) {
+                curState = i;
+                frameID = curState * numFramesPerState;
+                newState = true;
+                break;
+            }
+        }
+    }
+
+    function onImageLoaded(e) {
+        renderingLoop();
+    }
+
+    function renderingLoop() {
+        window.setTimeout(renderingLoop, 100);
+        drawCanvas();
+    }
+}
+    </script>
+</head>
+<body>
+<div style="position: absolute; top: 50px; left: 50px;">
+    <canvas id="canvas" width="200" height="128">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</div>
+</body>
+</html>

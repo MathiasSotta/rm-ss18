@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!-- saved from url=(0135)file:///Users/msot/Documents/ss18_richmedia_files/03_vfhrma.RMATHJ.offline/RMAPXC/05manipulation/sourcefiles/PXC_put_pixels_2.html#2014 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>PXC - Pixel kopieren</title>
+
+    
+    
+
+    <script type="text/javascript">
+        window.addEventListener('load', canvasApp, false);
+
+        var copyFunction;
+
+        function canvasApp() {
+            if (!document.createElement('canvas').getContext) {
+                return;
+            }
+
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');
+
+            function drawCanvas() {
+                context.fillStyle = "blue";
+                context.fillRect(20, 20, 50, 50);
+
+                context.fillStyle = "red";
+                context.fillRect(10, 10, 50, 50);
+
+            }
+
+            copyFunction = function () {
+                //Bilddaten vom Kontext laden
+                var imgData = context.getImageData(20, 20, 50, 50);
+                //kopieren in Ziel-Position (10, 80) auf den Canvas
+                //dirty rectangle: x=20, y=20, width=50, height=50
+                //-> zu kopierender Bereich der Bilddaten
+                context.putImageData(imgData, 20, 100, 0, 40, 50, 50);
+                context.putImageData(imgData, 20, 100, 40, 0, 50, 50);
+
+                //context.putImageData(imgData, 0, 100, 20, 20, 100, 100);
+            };
+
+            drawCanvas();
+        }
+
+
+    </script>
+</head>
+<body>
+<div style="position: absolute; top: 0px; left: 0px;">
+    <canvas id="canvas" width="250" height="200" style="border:1px solid #d3d3d3;">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+    <button onclick="copyFunction()">Copy</button>
+</div>
+
+
+</body></html>
