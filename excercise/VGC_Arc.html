@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VGC Arc</title>
+    <script src="modernizr.js"></script>
+    <script type="text/javascript">
+        window.addEventListener('load', eventWindowLoaded, false);
+        function eventWindowLoaded() {
+
+            canvasApp();
+
+        }
+
+        function canvasSupport() {
+            return Modernizr.canvas;
+        }
+
+
+        function canvasApp() {
+            if (!canvasSupport()) {
+                return;
+            } else {
+                var theCanvas = document.getElementById('canvas');
+                var context = theCanvas.getContext('2d');
+            }
+
+            drawCanvas();
+
+            function drawCanvas() {
+                var yOffset = 20;
+                context.lineWidth = 3;
+
+                context.beginPath();
+                context.moveTo(20, yOffset);
+                context.lineTo(100, yOffset);
+                context.arcTo(150, yOffset, 150, yOffset + 50, 50);
+                context.lineTo(150, yOffset + 100);
+                context.stroke();
+
+                //versetze zweite Kreisform 150 Pixel nach unten
+                yOffset += 150;
+
+                context.beginPath();
+                context.moveTo(20, yOffset);
+                context.lineTo(100, yOffset);
+                context.arc(100, yOffset + 50, 50, -Math.PI / 2, 0);
+                context.lineTo(150, yOffset + 50);
+                context.lineTo(150, yOffset + 100);
+                context.stroke();
+            }
+        }
+
+
+    </script>
+</head>
+<body>
+<div style="position: absolute; top: 50px; left: 50px; border: dashed">
+    <canvas id="canvas" width="500" height="500">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</div>
+</body>
+</html>

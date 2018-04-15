@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VGC HTML-Template: Basis-File</title>
+    <script type="text/javascript">
+        window.addEventListener('load', canvasApp, false);
+
+        function canvasApp() {
+            if (!document.createElement('canvas').getContext) {
+                return;
+            }
+
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');
+            drawCanvas();
+
+            function drawCanvas() {
+                // Zeichencode hier einfügen
+                context.fillStyle = "Turquoise";
+                ellipse(200, 200, 100, 100);
+            }
+
+            function ellipse(centerX, centerY, width, height) {
+                context.beginPath();
+
+                var x1 = centerX - width/2;
+                var y1 = centerY;
+
+                context.moveTo(x1, y1);
+
+                var cp1x = x1;
+                var cp1y = y1 - height/2;
+
+                var cp2x = x1 + width;
+                var cp2y = y1 - height/2;
+
+                var x2 = centerX + width/2;
+                var y2 = centerY;
+
+                context.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x2, y2);
+                context.stroke();
+            }
+
+        }
+    </script>
+</head>
+<body>
+<div style="position: absolute; top: 50px; left: 50px;">
+    <canvas id="canvas" width="500" height="500">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</div>
+</body>
+</html>
