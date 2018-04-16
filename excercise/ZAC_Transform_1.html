@@ -31,23 +31,26 @@
                 var centerY = 120;
                 var angle = 45 * Math.PI / 180;
 
-
                 context.translate(centerX, centerY);
                 context.rotate(angle);
 
                 //context.fillRect(10, 10, 40, 40);
                 context.fillRect(-rectWidth / 2, -rectHeight / 2, rectWidth, rectHeight);
 
-                context.restore();
 
-
-                context.strokeStyle = "#000000";
-                context.lineCap = "round";
-                context.lineWidth = 2;
-
-                context.moveTo(20,20);
-                context.lineTo(120,120);
+                context.setTransform(1,0,0,1,0,0,0,0);
+                context.beginPath();
+                context.moveTo(30,30);
+                context.lineTo(centerX,centerY);
                 context.stroke();
+                // context.strokeStyle = "#000000";
+                // context.lineCap = "round";
+                // context.lineWidth = 2;
+                //
+                // context.moveTo(0,0);
+                // context.rotate(-angle);
+                // context.lineTo(-90,-90);
+                // context.stroke();
             }
         }
 
