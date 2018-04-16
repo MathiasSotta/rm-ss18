@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ZAC: Einsendeaufgabe Template</title>
+    <script type="text/javascript">
+        window.addEventListener('load', canvasApp, false);
+
+        function canvasApp() {
+            if (!document.createElement('canvas').getContext) {
+                return;
+            }
+
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');
+
+            drawCanvas();
+
+            function drawCanvas() {
+
+                //Hintergrundfarbe
+                var bgColor = '#434b57';
+                //Strahlenfarbe
+                var beamColor = 'rgb(255, 117, 117)';
+
+                //Sonnenfarbe
+                var sunColor = "#e6d9b1";
+
+                var canvasWidth = 460;
+                var canvasHeight = 360;
+
+                //Zentrumsposition der Sonne
+                var sunX = 400;
+                var sunY = 160;
+
+                //Radius der Sonne
+                var sunRadius = 81;
+
+                //Strahlenlänge
+                var beamWidth = 460;
+
+                //Strahlendicke
+                var beamThickness = 2;
+
+                //Winkel-Offset pro Strahl
+                var rotStep = 7.5;
+
+                //Anzahl zu zeichnender Strahlen
+                var beamNum = Math.floor(360 / rotStep);
+
+                //Zeichencode einfügen
+                context.backgroundColor = bgColor;
+                context.ellipse(sunX, sunY, sunRadius, sunRadius, 0, 0, false);
+                context.fill();
+
+            }
+        }
+
+
+    </script>
+</head>
+<body>
+<div style="position: absolute;">
+    <canvas id="canvas" width="460" height="360">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</div>
+</body>
+</html>
