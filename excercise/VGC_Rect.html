@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VGC Rect</title>
+    <script type="text/javascript">
+        window.addEventListener('load', canvasApp, false);
+
+        function canvasApp() {
+            if (!document.createElement('canvas').getContext) {
+                return;
+            }
+
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');
+            drawCanvas();
+
+            function drawCanvas() {
+                drawRect();
+            }
+
+            function drawRect() {
+                context.fillStyle = '#ff0000';
+                context.strokeStyle = '#ffffff';
+                context.lineWidth = 3;
+
+                context.fillRect(0, 0, 60, 60);
+                context.strokeRect(15, 15, 30, 30);
+                context.clearRect(23, 23, 13, 13);
+            }
+
+
+        }
+
+
+    </script>
+</head>
+<body>
+<div style="position: absolute; top: 50px; left: 50px;">
+    <canvas id="canvas" width="500" height="500">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</div>
+</body>
+</html>

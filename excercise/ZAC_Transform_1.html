@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ZAC: Transformationen</title>
+
+    <script type="text/javascript">
+       window.addEventListener('load', canvasApp, false);
+
+        function canvasApp() {
+            if (!document.createElement('canvas').getContext) {
+                return;
+            }
+
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');
+
+            drawCanvas();
+
+            function drawCanvas() {
+                //erstes Rechteck ohne Transformation
+                context.fillStyle = 'HotPink';
+                context.fillRect(10, 10, 40, 40);
+
+                //zweites Rechteck
+                context.fillStyle = 'DarkSeaGreen';
+
+                var rectWidth = 40;
+                var rectHeight = 40;
+                var centerX = 120;
+                var centerY = 120;
+                var angle = 45 * Math.PI / 180;
+
+
+                context.translate(centerX, centerY);
+                context.rotate(angle);
+
+                //context.fillRect(10, 10, 40, 40);
+                context.fillRect(-rectWidth / 2, -rectHeight / 2, rectWidth, rectHeight);
+
+                context.restore();
+
+
+                context.strokeStyle = "#000000";
+                context.lineCap = "round";
+                context.lineWidth = 2;
+
+                context.moveTo(20,20);
+                context.lineTo(120,120);
+                context.stroke();
+            }
+        }
+
+
+    </script>
+</head>
+<body>
+<div style="position: absolute; top: 50px; left: 50px;">
+    <canvas id="canvas" width="500" height="500">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</div>
+</body>
+</html>

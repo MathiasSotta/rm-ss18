@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ZAC: Clipping</title>
+    <script type="text/javascript">
+       window.addEventListener('load', canvasApp, false);
+
+        function canvasApp() {
+            if (!document.createElement('canvas').getContext) {
+                return;
+            }
+
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');
+
+            drawCanvas();
+
+            function drawCanvas() {
+                context.fillStyle = 'HotPink';
+                context.fillRect(10, 10, 40, 40);
+
+                //Canvas-Zustand speichern
+                context.save();
+                context.beginPath();
+
+                //Maskierungsregion auf Kreis mit 30 Pixel Durchmesser setzen
+                context.arc(80, 30, 15, 0, 2 * Math.PI);
+                context.clip();
+
+                context.beginPath();
+                context.fillStyle = 'DarkSeaGreen';
+                context.fillRect(60, 10, 40, 40);
+
+                //letzten Zustand wiederherstellen
+                //context.restore();
+                context.fillRect(110, 10, 40, 40);
+            }
+
+
+        }
+
+
+    </script>
+</head>
+<body>
+<div style="position: absolute; top: 50px; left: 50px;">
+    <canvas id="canvas" width="500" height="500">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</div>
+</body>
+</html>

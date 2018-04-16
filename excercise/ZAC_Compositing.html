@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ZAC: Compositing</title>
+
+    <script type="text/javascript">
+       window.addEventListener('load', canvasApp, false);
+
+        function canvasApp() {
+            if (!document.createElement('canvas').getContext) {
+                return;
+            }
+
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');
+
+            drawCanvas();
+
+            function drawCanvas() {
+                context.fillStyle = 'midnightblue';
+                context.beginPath();
+                context.arc(60, 60, 30, 0, 2 * Math.PI);
+                context.fill();
+
+                context.globalAlpha = .6;
+                context.fillStyle = 'DarkSeaGreen';
+                context.fillRect(15, 15, 40, 40);
+
+                context.globalCompositeOperation = "destination-atop";
+                context.fillRect(65, 15, 40, 40);
+
+                context.globalCompositeOperation = "lighter";
+                context.fillRect(65, 65, 40, 40);
+
+                //Transparenz und Überblendung auf Default zurücksetzen
+                context.globalAlpha = 1;
+                context.globalCompositeOperation = "source-over";
+                context.fillRect(15, 65, 40, 40);
+            }
+
+
+        }
+
+
+    </script>
+</head>
+<body>
+<div style="position: absolute; top: 50px; left: 50px;">
+    <canvas id="canvas" width="500" height="500">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VGC Linestyle</title>
+    <script type="text/javascript">
+        window.addEventListener('load', canvasApp, false);
+
+        function canvasApp() {
+            if (!document.createElement('canvas').getContext) {
+                return;
+            }
+
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');
+            drawCanvas();
+
+            function drawCanvas() {
+                context.strokeStyle = "hotpink";
+                context.lineWidth = 10;
+                context.miterLimit = 5.0;
+                context.lineJoin = "miter";
+
+                //erste Linie zeichnen
+                context.beginPath();
+                context.moveTo(20, 20);
+                context.lineTo(60, 100);
+                context.lineTo(90, 20);
+                context.stroke();
+                context.closePath();
+
+                context.lineCap = "round";
+                context.strokeStyle = "aquamarine";
+
+                //zweite Linie zeichnen
+                context.beginPath();
+                context.moveTo(110, 20);
+                context.lineTo(130, 100);
+                context.lineTo(140, 20);
+                context.stroke();
+                context.closePath();
+            }
+
+
+        }
+
+
+    </script>
+</head>
+<body>
+<div style="position: absolute; top: 50px; left: 50px; border: dashed">
+    <canvas id="canvas" width="500" height="500">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</div>
+</body>
+</html>
