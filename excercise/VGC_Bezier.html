@@ -18,17 +18,20 @@
             function drawCanvas() {
                 // Zeichencode hier einfügen
                 context.fillStyle = "Turquoise";
-                ellipse(200, 200, 100, 100);
+                ellipse(120, 100, 180, 120);
             }
 
             function ellipse(centerX, centerY, width, height) {
                 context.beginPath();
 
+                // Startkoordinaten als obere linke Ecke des Pfades definieren
                 var x1 = centerX - width/2;
                 var y1 = centerY;
 
+                // Startpunkt festlegen
                 context.moveTo(x1, y1);
 
+                // Kontrollpunkte (Tangenten) definieren
                 var cp1x = x1;
                 var cp1y = y1 - height/2;
 
@@ -38,8 +41,14 @@
                 var x2 = centerX + width/2;
                 var y2 = centerY;
 
+                // erste Kurve zeichnen
                 context.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x2, y2);
-                context.stroke();
+
+                context.moveTo(x2, y2);
+                // Kontrollpunkte invertieren für Zeichnung des zweiten Pfads und Schließen der Ellipse
+                context.bezierCurveTo(x2, y2+height/2, x1, y1+height/2, x1, y1);
+                context.fill();
+                context.closePath();
             }
 
         }
