@@ -49,9 +49,19 @@
                 var beamNum = Math.floor(360 / rotStep);
 
                 //Zeichencode einfügen
-                context.backgroundColor = bgColor;
-                context.ellipse(sunX, sunY, sunRadius, sunRadius, 0, 0, false);
-                context.fill();
+                var gr = context.createRadialGradient(0, 0, 360, canvasWidth, canvasHeight, 360);
+                gr.addColorStop(0.3, "#000000");
+                gr.addColorStop(0.6, "#000088");
+                //gr.addColorStop(0.8, "#FFFF88");
+
+                context.fillStyle = gr;
+
+                context.fillRect(0,0,canvasWidth,canvasHeight);
+
+
+
+                // context.ellipse(sunX, sunY, sunRadius, sunRadius, 0, 0, false);
+                // context.fill();
 
             }
         }
