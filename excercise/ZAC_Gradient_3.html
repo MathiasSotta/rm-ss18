@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ZAC: radialer Verlauf</title>
+
+    <script type="text/javascript">
+       window.addEventListener('load', canvasApp, false);
+
+        function canvasApp() {
+            if (!document.createElement('canvas').getContext) {
+                return;
+            }
+
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');
+
+            drawCanvas();
+
+            function drawCanvas() {
+                var gr = context.createRadialGradient(100, 150, 0, 100, 150, 150);
+
+                gr.addColorStop(0, '#ffff00');
+                gr.addColorStop(0.3, '#ff0000');
+                gr.addColorStop(0.7, '#00ff00');
+                gr.addColorStop(1, 'rgba(0,0,255,0.5)');
+
+                context.fillStyle = gr;
+                context.fillRect(0, 0, 100, 100);
+                context.fillRect(50, 100, 100, 100);
+                context.fillRect(100, 200, 100, 100);
+            }
+        }
+
+
+    </script>
+</head>
+<body>
+<div style="position: absolute; top: 50px; left: 50px;">
+    <canvas id="canvas" width="500" height="500">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</div>
+</body>
+</html>
