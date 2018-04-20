@@ -48,22 +48,44 @@
                 //Anzahl zu zeichnender Strahlen
                 var beamNum = Math.floor(360 / rotStep);
 
-                //Zeichencode einfügen
-                var gr = context.createRadialGradient(0, 0, 360, canvasWidth, canvasHeight, 360);
-                gr.addColorStop(0.3, "#000000");
-                gr.addColorStop(0.6, "#000088");
-                //gr.addColorStop(0.8, "#FFFF88");
-
-                context.fillStyle = gr;
-
+                // Hintergrund setzen
+                context.fillStyle = bgColor;
                 context.fillRect(0,0,canvasWidth,canvasHeight);
 
+                // Verlauf für Strahlen setzen
+                var gradBeam = context.createRadialGradient(0, 0, 100, -100, 0, 250);
+                gradBeam.addColorStop(0, beamColor);
+                gradBeam.addColorStop(1, bgColor);
 
+                // Rotationswinkel berechnen
+                var angle = rotStep * Math.PI / 180;
 
-                // context.ellipse(sunX, sunY, sunRadius, sunRadius, 0, 0, false);
-                // context.fill();
+                // Strahlen zeichnen
+                context.strokeStyle = gradBeam;
+                context.lineWidth = beamThickness;
 
+                context.beginPath();
+                    context.translate(sunX,sunY);
+
+                    for (i=0; i<beamNum; i++) {
+                        context.moveTo(0, 0);
+                        context.lineTo(beamWidth, 0);
+                        context.stroke();
+                        context.rotate(angle);
+                    }
+                context.closePath();
+
+                // Transformationsmatrix zurücksetzen
+                context.setTransform(1, 0, 0, 1, 0, 0);
+
+                //Sonne zeichnen
+                context.fillStyle = sunColor;
+                context.beginPath();
+                    context.ellipse(sunX, sunY, sunRadius, sunRadius, 45 * Math.PI/180, 0, 2 * Math.PI);
+                    context.fill();
+                context.closePath();
             }
+
         }
 
 
