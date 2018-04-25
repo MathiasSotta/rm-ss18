@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ANI: Rendering Loop setInterval</title>
+		<link rel="stylesheet" type="text/css" href="../../../.inc/css/stylesheet.css" />
+    <script type="text/javascript">
+        window.addEventListener('load', canvasApp, false);
+
+function canvasApp() {
+    if (!document.createElement('canvas').getContext) {
+        return;
+    }
+
+    var theCanvas = document.getElementById('canvas');
+    var context = theCanvas.getContext('2d');
+
+    var step = 5;		//Schrittgröße pro Frame
+    var y = -30;		//initiale y-Position
+    var x = 250;		//initiale x-Position
+
+    var ballRadius = 10; // Radius des Balls
+
+
+    function drawCanvas() {
+        //Hintergrund
+        context.fillStyle = '#EEEEEE';
+        context.fillRect(0, 0, theCanvas.width, theCanvas.height);
+
+        //vertikale Position verändern
+        y += step;
+
+        //Objekt zeichnen
+        context.fillStyle = "aquamarine";
+        context.strokeStyle = "grey";
+        context.beginPath();
+        context.arc(x, y, ballRadius, 0, 2 * Math.PI, true);
+        context.closePath();
+        context.fill();
+        context.stroke();
+
+        if (y > theCanvas.height+ballRadius) {
+            return;
+
+        }
+    }
+
+    const FRAME_RATE = 30;
+    var intervalTime = 1000 / FRAME_RATE;
+    setInterval(drawCanvas, intervalTime);
+
+    console.log("Function drawCanvas: " + !drawCanvas());
+
+}
+
+
+    </script>
+</head>
+<body>
+<div style="position: absolute; top: 50px; left: 50px;">
+    <canvas id="canvas" width="500" height="500">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+    <br>
+    <div class="box">
+    <p><a class="btn_reload" href="javascript:location.reload();">Wiederholen</a></p>
+    </div>
+</div>
+</body>
+</html>
