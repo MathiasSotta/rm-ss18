@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ANI: Framerate und Schrittgröße anpassen</title>
+
+    <script type="text/javascript">
+        window.addEventListener('load', canvasApp, false);
+
+        function canvasApp() {
+            if (!document.createElement('canvas').getContext) {
+                return;
+            }
+
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');
+
+            var step = 7.5;
+
+            var p1 = {x: 70, y: 40};       //Startpunkt
+            var p2 = {x: 300, y: 440};       //Endpunkt
+
+            var dx = p2.x - p1.x;          //horizontaler Anteil der Distanz
+            var dy = p2.y - p1.y;          //vertikaler Anteil der Distanz
+
+            var distance = Math.sqrt(dx * dx + dy * dy);     //Distanz
+
+            var numSteps = distance / step;                //Anzahl der Schritte
+
+            var xStep = dx / numSteps;                   //horizontale Schrittgröße
+            var yStep = dy / numSteps;                   //vertikale Schrittgröße
+
+            var ball = {x: p1.x, y: p1.y};
+
+            function drawCanvas() {
+                //Hintergrund
+                context.fillStyle = '#EEEEEE';
+                context.fillRect(0, 0, theCanvas.width, theCanvas.height);
+
+                if (numSteps > 0) {
+                    //vertikale Position verändern
+                    ball.y += yStep;
+                    ball.x += xStep;
+
+                    numSteps--;
+                }
+
+                //Ball zeichnen
+                context.fillStyle = "aquamarine";
+                context.strokeStyle = "grey";
+                context.beginPath();
+                context.arc(ball.x, ball.y, 10, 0, 2 * Math.PI, true);
+                context.closePath();
+                context.fill();
+                context.stroke();
+            }
+
+            const FRAME_RATE = 60;                         //Bildwiederholrate
+            var intervalTime = 1000 / FRAME_RATE;          //Zeit zwischen Rendering Loop in Millisekunden
+            var intID = setInterval(drawCanvas, intervalTime);   //Intervall-Timer starten
+        }
+
+
+    </script>
+</head>
+<body>
+<div style="position: absolute; top: 50px; left: 50px;">
+    <canvas id="canvas" width="500" height="500">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</div>
+</body>
+</html>
