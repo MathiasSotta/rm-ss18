@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ANI: Framerate und Schrittgröße anpassen</title>
+    <title>ANI: Bewegung zwiscghen zwei Punkten</title>
 
     <script type="text/javascript">
         window.addEventListener('load', canvasApp, false);
@@ -15,9 +15,9 @@
             var theCanvas = document.getElementById('canvas');
             var context = theCanvas.getContext('2d');
 
-            var step = 7.5;
+            var step = 7.5;		//Schrittgröße pro Frame
 
-            var p1 = {x: 70, y: 40};       //Startpunkt
+            var p1 = {x: 450, y: 40};       //Startpunkt
             var p2 = {x: 300, y: 440};       //Endpunkt
 
             var dx = p2.x - p1.x;          //horizontaler Anteil der Distanz
@@ -53,17 +53,12 @@
                 context.closePath();
                 context.fill();
                 context.stroke();
-
-                requestAnimationFrame(drawCanvas);
             }
 
-            //const FRAME_RATE = 60;                         //Bildwiederholrate
-            //var intervalTime = 1000 / FRAME_RATE;          //Zeit zwischen Rendering Loop in Millisekunden
-            //intID = setInterval(drawCanvas, intervalTime);   //Intervall-Timer starten
-            drawCanvas();
-
+            const FRAME_RATE = 60;                         //Bildwiederholrate
+            var intervalTime = 1000 / FRAME_RATE;          //Zeit zwischen Rendering Loop in Millisekunden
+            var intID = setInterval(drawCanvas, intervalTime);   //Intervall-Timer starten
         }
-
 
 
     </script>

@@ -29,6 +29,7 @@ function canvasApp() {
 
         //vertikale Position verändern
         y += step;
+        console.log("Rendering-loop running");
 
         //Objekt zeichnen
         context.fillStyle = "aquamarine";
@@ -40,16 +41,19 @@ function canvasApp() {
         context.stroke();
 
         if (y > theCanvas.height+ballRadius) {
-            return;
+            clearInterval(intervalID);
+            console.log("Rendering-loop stopped");
+            //return;
 
         }
     }
 
     const FRAME_RATE = 30;
     var intervalTime = 1000 / FRAME_RATE;
-    setInterval(drawCanvas, intervalTime);
 
-    console.log("Function drawCanvas: " + !drawCanvas());
+    var intervalID = setInterval(drawCanvas, intervalTime);
+
+
 
 }
 
