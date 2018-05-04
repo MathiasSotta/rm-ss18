@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ANI: Framerate und Schrittgröße anpassen</title>
+    <title>ANI: Bewegungsanimation mit Vektoren</title>
 
     <script type="text/javascript">
         window.addEventListener('load', canvasApp, false);
@@ -15,20 +15,15 @@
             var theCanvas = document.getElementById('canvas');
             var context = theCanvas.getContext('2d');
 
-            var step = 7.5;
 
             var p1 = {x: 70, y: 40};       //Startpunkt
-            var p2 = {x: 300, y: 440};       //Endpunkt
+            var angle = 70;                //Winkel des Richtungsvektors
+            var step = 5;		           //Schrittgröße und damit Länge des Vektors pro Frame
 
-            var dx = p2.x - p1.x;          //horizontaler Anteil der Distanz
-            var dy = p2.y - p1.y;          //vertikaler Anteil der Distanz
+            var radAngle = angle * Math.PI / 180;
 
-            var distance = Math.sqrt(dx * dx + dy * dy);     //Distanz
-
-            var numSteps = distance / step;                //Anzahl der Schritte
-
-            var xStep = dx / numSteps;                   //horizontale Schrittgröße
-            var yStep = dy / numSteps;                   //vertikale Schrittgröße
+            var xStep = Math.cos(radAngle) * step;
+            var yStep = Math.sin(radAngle) * step;
 
             var ball = {x: p1.x, y: p1.y};
 
@@ -37,13 +32,8 @@
                 context.fillStyle = '#EEEEEE';
                 context.fillRect(0, 0, theCanvas.width, theCanvas.height);
 
-                if (numSteps > 0) {
-                    //vertikale Position verändern
-                    ball.y += yStep;
-                    ball.x += xStep;
-
-                    numSteps--;
-                }
+                ball.y += yStep;
+                ball.x += xStep;
 
                 //Ball zeichnen
                 context.fillStyle = "aquamarine";
@@ -53,7 +43,6 @@
                 context.closePath();
                 context.fill();
                 context.stroke();
-
             }
 
             function renderingLoop() {
@@ -61,13 +50,8 @@
                 drawCanvas();
             }
 
-            //const FRAME_RATE = 60;                         //Bildwiederholrate
-            //var intervalTime = 1000 / FRAME_RATE;          //Zeit zwischen Rendering Loop in Millisekunden
-            //intID = setInterval(drawCanvas, intervalTime);   //Intervall-Timer starten
             renderingLoop();
-
         }
-
 
 
     </script>

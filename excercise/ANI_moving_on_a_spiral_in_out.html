@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ANI: Framerate und Schrittgröße anpassen</title>
-
+    <title>ANI: Übung 1 Lösung</title>
+		<link rel="stylesheet" type="text/css" href="../../../.inc/css/stylesheet.css" />
     <script type="text/javascript">
         window.addEventListener('load', canvasApp, false);
 
@@ -15,35 +15,37 @@
             var theCanvas = document.getElementById('canvas');
             var context = theCanvas.getContext('2d');
 
-            var step = 7.5;
+            var radius = 150;
+            var step = 2;
 
-            var p1 = {x: 70, y: 40};       //Startpunkt
-            var p2 = {x: 300, y: 440};       //Endpunkt
+            //von außen nach innen
+            var moveDirection = -1;
 
-            var dx = p2.x - p1.x;          //horizontaler Anteil der Distanz
-            var dy = p2.y - p1.y;          //vertikaler Anteil der Distanz
+            var circleX = theCanvas.width / 2;
+            var circleY = theCanvas.height / 2;
 
-            var distance = Math.sqrt(dx * dx + dy * dy);     //Distanz
-
-            var numSteps = distance / step;                //Anzahl der Schritte
-
-            var xStep = dx / numSteps;                   //horizontale Schrittgröße
-            var yStep = dy / numSteps;                   //vertikale Schrittgröße
-
-            var ball = {x: p1.x, y: p1.y};
+            var ball = {x: 0, y: 0, angle: 0};
 
             function drawCanvas() {
                 //Hintergrund
                 context.fillStyle = '#EEEEEE';
                 context.fillRect(0, 0, theCanvas.width, theCanvas.height);
 
-                if (numSteps > 0) {
-                    //vertikale Position verändern
-                    ball.y += yStep;
-                    ball.x += xStep;
-
-                    numSteps--;
+                if (radius < 0 && moveDirection == -1) {
+                    //nach außen
+                    moveDirection = 1;
+                } else if (radius > 200 && moveDirection == 1) {
+                    //nach innen
+                    moveDirection = -1;
                 }
+                radius += 0.5 * moveDirection;
+
+                var radAngle = ball.angle * Math.PI / 180;
+                ball.x = circleX + radius * Math.cos(radAngle);
+                ball.y = circleY + radius * Math.sin(radAngle);
+
+                ball.angle += step;
+
 
                 //Ball zeichnen
                 context.fillStyle = "aquamarine";
@@ -53,7 +55,6 @@
                 context.closePath();
                 context.fill();
                 context.stroke();
-
             }
 
             function renderingLoop() {
@@ -61,13 +62,8 @@
                 drawCanvas();
             }
 
-            //const FRAME_RATE = 60;                         //Bildwiederholrate
-            //var intervalTime = 1000 / FRAME_RATE;          //Zeit zwischen Rendering Loop in Millisekunden
-            //intID = setInterval(drawCanvas, intervalTime);   //Intervall-Timer starten
             renderingLoop();
-
         }
-
 
 
     </script>
@@ -77,6 +73,9 @@
     <canvas id="canvas" width="500" height="500">
         Your browser does not support the HTML 5 Canvas.
     </canvas>
+    <div class="box">
+	    <p><a class="btn_reload" href="javascript:location.reload();">Wiederholen</a></p>
+		</div>
 </div>
 </body>
 </html>
