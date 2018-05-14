@@ -85,4 +85,93 @@ function canvasApp() {
 		</div>
 </div>
 </body>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ANI: Schwerkraft mit Aufprallen</title>
+		<link rel="stylesheet" type="text/css" href="../../../.inc/css/stylesheet.css" />
+    <script type="text/javascript">
+        window.addEventListener('load', canvasApp, false);
+
+function canvasApp() {
+    if (!document.createElement('canvas').getContext) {
+        return;
+    }
+
+    var theCanvas = document.getElementById('canvas');
+    var context = theCanvas.getContext('2d');
+
+    var angle = -45;         //Startwinkel
+    var gravity = .1;         //Schwerkraft
+    var groundY = theCanvas.height - 50;         //Höhe des Bodens
+    var startX = 50;          //x-Komponente der Startposition
+    var startY = groundY - 100;      //y-Komponente der Startposition
+    var step = 3;             //Schrittgröße
+
+
+    var ball = {
+        x: startX,            //x-Position
+        y: startY,            //y-Position
+        vx: step * Math.cos(angle * Math.PI / 180),   //Geschwindigkeit in x-Richtung
+        vy: step * Math.sin(angle * Math.PI / 180)    //Geschwindigkeit in y-Richtung
+    };
+
+    function drawCanvas() {
+        //Hintergrund
+        context.fillStyle = '#EEEEEE';
+        context.fillRect(0, 0, theCanvas.width, theCanvas.height);
+
+        //Schwerkraft
+        ball.vy += gravity;
+
+        if (ball.y + 10 > groundY) { //Aufprallen
+            ball.vy *= -1;
+        }
+
+        ball.x += ball.vx;
+        ball.y += ball.vy;
+
+        //Ball zeichnen
+        context.fillStyle = "aquamarine";
+        context.strokeStyle = "grey";
+        context.beginPath();
+        context.arc(ball.x, ball.y, 10, 0, 2 * Math.PI, true);
+        context.closePath();
+        context.fill();
+        context.stroke();
+
+        //Boden zeichnen
+        context.strokeStyle = "black";
+        context.beginPath();
+        context.moveTo(0, groundY);
+        context.lineTo(theCanvas.width, groundY);
+        context.closePath();
+        context.stroke();
+    }
+
+    function renderingLoop() {
+        requestAnimationFrame(renderingLoop);
+        drawCanvas();
+    }
+
+    renderingLoop();
+}
+
+
+    </script>
+</head>
+<body>
+<div style="position: absolute; top: 50px; left: 50px;">
+    <canvas id="canvas" width="500" height="500">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas><br>
+
+    <div class="box">
+	    <p><a class="btn_reload" href="javascript:location.reload();">Wiederholen</a></p>
+		</div>
+</div>
+</body>
+
 </html>

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ANI: Einsendeaufgabe</title>
+
+    <script type="text/javascript">
+        window.addEventListener('load', canvasApp, false);
+
+        function canvasApp() {
+            if (!document.createElement('canvas').getContext) {
+                return;
+            }
+
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');
+
+            var angle = -45;         //Startwinkel
+            var gravity = .1;         //Schwerkraft
+            var groundY = theCanvas.height - 50;         //Höhe des Bodens
+            var startX = theCanvas.width / 2;            //x-Komponente der Startposition
+            var startY = theCanvas.height / 4;           //y-Komponente der Startposition
+            var step = -3;                                //Schrittgröße
+
+            //Eigenschaften des Characters
+            var character = {
+                x: startX,                                  //x-Position
+                y: startY,                                  //y-Position
+                vx: step * Math.cos(angle * Math.PI / 180), //Geschwindigkeit in x-Richtung
+                vy: step * Math.sin(angle * Math.PI / 180), //Geschwindigkeit in y-Richtung
+                elasticity: 0.95                            //Elastizität
+            };
+
+            //Image-Objekte erstellen
+            var creatureImg = new Image();
+            var groundImg = new Image();
+
+            //Callback für Ladevorgang hinzufügen
+            //...
+            creatureImg.addEventListener('load', onItemLoaded);
+            groundImg.addEventListener('load', onItemLoaded);
+
+            //Anzahl der zu ladenen Bilder
+            var numImages = 2;
+
+            //Counter für Ladevorgang der Bilder, wird in onItemLoaded() hochgezählt
+            var imgLoadCount = 0;
+
+            //Bilder laden
+            creatureImg.src = "creature.png";
+            groundImg.src = "ground.png";
+
+            //Variablen für Abmaße des Characters
+            //nach Abschließen des Ladevorgangs setzen
+            var creatureWidth;
+            var creatureHeight;
+
+            function drawCanvas() {
+                //Hintergrund
+                context.fillStyle = '#EEEEEE';
+                context.fillRect(0, 0, theCanvas.width, theCanvas.height);
+
+                // console.log("X: " + character.x);
+                // console.log("Y: " + character.y);
+
+                //Schwerkraft
+                character.vy += gravity;
+
+                //Kollision Boden
+                if (character.y + creatureHeight / 2 >= groundY) {
+                    character.vy *= -1;                           //Abprallen
+                    character.vy *= character.elasticity;          //Elastizität anwenden
+                    character.y = groundY - creatureHeight / 2;   //Position korrigieren
+                }
+
+                if (character.x + creatureWidth >= theCanvas.width) {    //Kollision rechte Wand
+                    character.vx *= -1;                      //Abprallen
+                    character.vx *= character.elasticity;   // Elastizität anwenden
+                    character.x = theCanvas.width - creatureWidth;    //Position korrigieren
+                 }
+                 else if (character.x - creatureWidth <= 0) {                 //Kollision linke Wand
+                    character.vx *= -1;                      //Abprallen
+                    character.vx *= character.elasticity;   // Elastizität anwenden
+                    character.x = 0 + creatureWidth;    //Position korrigieren
+                 }
+
+                //Position aktualisieren
+                character.x += character.vx;
+                character.y += character.vy;
+
+                //Character zeichnen
+                drawCharacter();
+
+                //Boden zeichnen
+                drawGround();
+            }
+
+            function drawCharacter() {
+                context.save();
+                context.translate(character.x, character.y);
+
+                //Bewegungsrichtung des Characters
+                var direction = character.vx / Math.abs(character.vx);
+                console.log(direction);
+                //Ausrichtung des Characters über Skalierungstransformation
+                if (direction < 0) {
+                    context.scale(-1,1)
+                };
+
+                context.drawImage(creatureImg, character.vx, character.vy);
+                context.restore();
+            }
+
+            function drawGround() {
+                //Boden mit ground.png zeichnen
+                context.drawImage(groundImg, 0, theCanvas.height - 50);
+            }
+
+            function renderingLoop() {
+                requestAnimationFrame(renderingLoop);
+                drawCanvas();
+            }
+
+            function onItemLoaded() {
+                imgLoadCount++;
+                //console.log(imgLoadCount);
+                if (imgLoadCount == numImages) {     //Bilder geladen
+
+                    // Breite und Hoehe des Characters setzen
+                    creatureWidth = creatureImg.width;
+                    creatureHeight = creatureImg.height;
+
+                    renderingLoop();
+                }
+            }
+        }
+
+    </script>
+</head>
+<body>
+<div style="position: absolute; top: 50px; left: 50px;">
+    <canvas id="canvas" width="500" height="330">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</div>
+</body>
+</html>
