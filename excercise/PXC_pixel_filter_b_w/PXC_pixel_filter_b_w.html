@@ -1,0 +1,106 @@
+    <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PXC - Schwarz-Weiß-Filter</title>
+
+    <!DOCTYPE html>
+    <html>
+
+    <script type="text/javascript">
+        window.addEventListener('load', canvasApp, false);
+
+        function canvasApp() {
+            if (!document.createElement('canvas').getContext) {
+                return;
+            }
+
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');
+            var image = new Image();
+            image.addEventListener('load', onImageLoaded);
+            image.src = 'colored.jpg';
+
+            var imgWidth;
+            var imgHeight;
+
+            function onImageLoaded(e) {
+                imgWidth = image.width;
+                imgHeight = image.height;
+                drawCanvas();
+            }
+
+            function drawCanvas() {
+                //Bild in Position 0, 0 rendern
+                context.drawImage(image, 0, 0);
+
+                // rechte Hälfte des Kontexts in imgData laden
+                var imgData = context.getImageData(imgWidth / 2, 0, imgWidth / 2, imgHeight);
+
+                // Farbwert
+                var colorValue = 0;
+
+
+                var rasterSize = 5;
+
+                for (var x = 0; x < imgData.width; x++) {
+                    for (var y = 0; y < imgData.height; y++) {
+
+                        var rasterX = ((x / rasterSize) | 0) * rasterSize;
+                        var rasterY = ((y / rasterSize) | 0) * rasterSize;
+
+                        var rasterValIndex = (rasterX + rasterY * imgData.width) * 4;
+
+                        r = imgData.data[rasterValIndex];
+                        g = imgData.data[rasterValIndex + 1];
+                        b = imgData.data[rasterValIndex + 2];
+                        a = imgData.data[rasterValIndex + 3];
+
+                        //Pixel setzen in x, y
+                        setPixel(imgData, x, y, r, g, b, a);
+                    }
+                }
+
+                function setPixel(imgData, x, y, r, g, b, a) {
+                    var index = (x + y * imgData.width) * 4;
+                    imgData.data[index + 0] = r;
+                    imgData.data[index + 1] = g;
+                    imgData.data[index + 2] = b;
+                    imgData.data[index + 3] = a;
+                }
+
+
+                // // data-Array durchlaufen
+                // for (var i = 0; i < imgData.data.length; i++) {
+                //     // Falls die alpha-Komponente erreicht wurde
+                //     if (i % 4 == 3) {
+                //         // Farbmittelwert eines Pixels ermitteln
+                //         colorValue = parseInt(colorValue / 3);
+                //         // Mittelwert auf rot, grün und blau aufteilen
+                //         imgData.data[i - 3] = imgData.data[i - 2] = imgData.data[i - 1] = colorValue;
+                //         // Farbwert zurücksetzen
+                //         colorValue = 0;
+                //     } else {
+                //         // Farbwerte addieren
+                //         colorValue += imgData.data[i];
+                //     }
+                // }
+
+                // ImageData mit Filter wieder in Kontext setzen
+                context.putImageData(imgData, imgWidth / 2, 0);
+            }
+
+        }
+
+
+    </script>
+</head>
+<body>
+<div style="position: absolute; top: 0px; left: 0px;">
+    <canvas id="canvas" width="615" height="410" style="border:1px solid #d3d3d3;">
+        Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</div>
+
+</body>
+</html>
