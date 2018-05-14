@@ -53,7 +53,7 @@
                 context.fillRect(0,0,canvasWidth,canvasHeight);
 
                 // Verlauf für Strahlen setzen
-                var gradBeam = context.createRadialGradient(0, 0, 100, -100, 0, 250);
+                var gradBeam = context.createRadialGradient(0, 0, 0, 0, 0, 400);
                 gradBeam.addColorStop(0, beamColor);
                 gradBeam.addColorStop(1, bgColor);
 
@@ -64,10 +64,11 @@
                 context.strokeStyle = gradBeam;
                 context.lineWidth = beamThickness;
 
-                context.beginPath();
+
                     context.translate(sunX,sunY);
 
                     for (i=0; i<beamNum; i++) {
+                        context.beginPath();
                         context.moveTo(0, 0);
                         context.lineTo(beamWidth, 0);
                         context.stroke();
