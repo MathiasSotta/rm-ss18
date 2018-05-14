@@ -19,7 +19,8 @@
             var context = theCanvas.getContext('2d');
             var image = new Image();
             image.addEventListener('load', onImageLoaded);
-            image.src = 'PXC_pixel_filter_no_red/colored.jpg';
+            image.src = 'monster.png';
+            // image.src = 'colored.jpg';
 
             var input = document.getElementById("inputForm");
             console.log(input.rasterSizeInput.value);
@@ -46,7 +47,7 @@
                 context.drawImage(image, 0, 0);
 
                 // rechte Hälfte des Kontexts in imgData laden
-                var imgData = context.getImageData(imgWidth / 2, 0, imgWidth / 2, imgHeight);
+                var imgData = context.getImageData(0, 0, imgWidth / 2, imgHeight);
 
 
                 // data-Array in 4er-Schritten durchlaufen
@@ -69,7 +70,7 @@
                 }
 
                 // ImageData mit Filter wieder in Kontext setzen
-                context.putImageData(imgData, imgWidth / 2, 0);
+                context.putImageData(imgData, imgWidth / 8, 0);
             }
 
             function setPixel(imgData, x, y, r, g, b, a) {
