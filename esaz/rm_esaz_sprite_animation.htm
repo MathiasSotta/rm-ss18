@@ -2,7 +2,7 @@
 <!-- saved from url=(0096)https://moodle.oncampus.de/pluginfile.php/1150194/mod_resource/content/2/UEB1_raster_filter.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
-    <title></title>
+    <title>Pixeled Monster</title>
 
 
     <script type="text/javascript">
@@ -19,16 +19,14 @@
             image.addEventListener('load', onImageLoaded);
             image.src = 'monster.png';
 
-
-            // image.src = 'colored.jpg';
-
             var input = document.getElementById("inputForm");
-            console.log(input.rasterSizeInput.value);
+            //console.log(input.rasterSizeInput.value);
             input.rasterSizeInput.addEventListener("change", onRasterChange);
 
             var imgWidth;
             var imgHeight;
-
+            var numFrames = 10;
+            var frameID = 0;
             var rasterSize = input.rasterSizeInput.value;
 
 
@@ -37,11 +35,9 @@
             }
 
             function renderingLoop() {
-                window.setTimeout(renderingLoop, 100);
-
                 imgWidth = image.width / numFrames;
                 imgHeight = image.height;
-
+                window.setTimeout(renderingLoop, 100);
                 drawCanvas();
             }
 
@@ -50,22 +46,19 @@
                 drawCanvas();
             }
 
-            var numFrames = 10;
-            var spriteSize = 190;
-            var spriteHeight = 240;
-            var frameID = 0;
-            var sourceX = frameID * spriteSize;
-            var sourceY = spriteSize;
-
             function drawCanvas() {
-                //context.clearRect(0, 0, theCanvas.width, theCanvas.height);
+                context.clearRect(0, 0, theCanvas.width, theCanvas.height);
 
-                //Bild in Position 0, 0 rendern
-                //context.drawImage(image, 0, 0);
-                context.drawImage(image, sourceX, sourceY, spriteSize, spriteHeight, 200, 200, spriteSize, imgHeight);
-                console.log(sourceY, sourceY, spriteSize, spriteHeight);
+                // Koordinaten für die Bildplatzierung setzen; Y bleibt gleich, da alle Sprites in einer Zeile stehen
+                var sourceX = frameID * imgWidth;
+                var sourceY = 0;
+
+
+                context.drawImage(image, sourceX, sourceY, imgWidth, imgHeight, 0, 0, imgWidth, imgHeight);
+                //console.log(sourceX, sourceY, spriteSize, spriteHeight);
+
                 // rechte Hälfte des Kontexts in imgData laden
-                var imgData = context.getImageData(0, 0, imgWidth / 2, imgHeight);
+                var imgData = context.getImageData(imgWidth / 2, 0, imgWidth / 2, imgHeight);
 
 
                 // data-Array in 4er-Schritten durchlaufen
@@ -87,13 +80,13 @@
                     }
                 }
 
+                // ImageData mit Filter wieder in Kontext setzen
+                context.putImageData(imgData, imgWidth/2, 0);
+
                 frameID++;
                 if (frameID == numFrames) {
                     frameID = 0;
                 }
-
-                // ImageData mit Filter wieder in Kontext setzen
-                context.putImageData(imgData, imgWidth / 9, 0);
             }
 
             function setPixel(imgData, x, y, r, g, b, a) {
@@ -110,7 +103,7 @@
 </head>
 <body>
 <div style="position: absolute; top: 0px; left: 0px;">
-    <canvas id="canvas" width="615" height="410" style="border:1px solid #d3d3d3;">
+    <canvas id="canvas" width="200" height="250" style="border:1px solid #d3d3d3;">
         Your browser does not support the HTML 5 Canvas.
     </canvas>
     <div>
