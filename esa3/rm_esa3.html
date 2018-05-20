@@ -20,7 +20,7 @@
             var groundY = theCanvas.height - 50;         //Höhe des Bodens
             var startX = theCanvas.width / 2;            //x-Komponente der Startposition
             var startY = theCanvas.height / 4;           //y-Komponente der Startposition
-            var step = -3;                                //Schrittgröße
+            var step = 3;                                //Schrittgröße
 
             //Eigenschaften des Characters
             var character = {
@@ -73,15 +73,15 @@
                     character.y = groundY - creatureHeight / 2;   //Position korrigieren
                 }
 
-                if (character.x + creatureWidth >= theCanvas.width) {    //Kollision rechte Wand
+                if (character.x + creatureWidth / 2 >= theCanvas.width) {    //Kollision rechte Wand
                     character.vx *= -1;                      //Abprallen
                     character.vx *= character.elasticity;   // Elastizität anwenden
-                    character.x = theCanvas.width - creatureWidth;    //Position korrigieren
+                    character.x = theCanvas.width - creatureWidth / 2;    //Position korrigieren
                  }
-                 else if (character.x - creatureWidth <= 0) {                 //Kollision linke Wand
+                 else if (character.x - creatureWidth / 2 <= 0) {                 //Kollision linke Wand
                     character.vx *= -1;                      //Abprallen
                     character.vx *= character.elasticity;   // Elastizität anwenden
-                    character.x = 0 + creatureWidth;    //Position korrigieren
+                    character.x = 0 + creatureWidth / 2;    //Position korrigieren
                  }
 
                 //Position aktualisieren
@@ -103,17 +103,18 @@
                 var direction = character.vx / Math.abs(character.vx);
                 console.log(direction);
                 //Ausrichtung des Characters über Skalierungstransformation
-                if (direction < 0) {
-                    context.scale(-1,1)
-                };
+                if (Math.abs(character.vx) > 0) {
+                    context.scale(direction,1)
+                }
 
-                context.drawImage(creatureImg, character.vx, character.vy);
+                //context.drawImage(creatureImg, character.vx, character.vy);
+                context.drawImage(creatureImg,  -creatureImg.width / 2, -creatureImg.height / 2);
                 context.restore();
             }
 
             function drawGround() {
                 //Boden mit ground.png zeichnen
-                context.drawImage(groundImg, 0, theCanvas.height - 50);
+                context.drawImage(groundImg, 0, groundY - 10);
             }
 
             function renderingLoop() {
