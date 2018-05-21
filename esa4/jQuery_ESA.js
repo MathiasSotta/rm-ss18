@@ -2,6 +2,20 @@
 jQuery(document).ready(function ($) {
     var editItem;
     var uniqueItemID = $('ul.todo-list > li').length; //Checkbox ID initial setzen
+    var $templateLI = ("<li>\n" +
+        "            <input type=\"checkbox\"/>\n" +
+        "            <label>\n" +
+        "                <input type=\"text\" value=\"\" readonly/>\n" +
+        "            </label>\n" +
+        "            <div class=\"arrow-btn\"></div>\n" +
+        "            <ul class=\"item-menu-bar\">\n" +
+        "                <li class=\"edit-btn\">Editieren</li>\n" +
+        "                <li class=\"duplicate-btn\">Duplizieren</li>\n" +
+        "                <li class=\"remove-btn\">Löschen</li>\n" +
+        "            </ul>\n" +
+        "        </li>");
+
+    var $templateUL = ("<ul class=\"menu-list todo-list\"></ul>\n");
 
     /*Checkbox Functionality*/
 
@@ -128,7 +142,6 @@ jQuery(document).ready(function ($) {
         }
     });
 
-
     function unEditModeItem() {
         var tf = editItem.find('input[type="text"]');
         tf.attr('readonly', 'readonly');
@@ -147,24 +160,76 @@ jQuery(document).ready(function ($) {
         //Aufgabenteil a)
 
         //neues Element einfügen
+        $('ul.todo-list').append($templateLI);
 
         //Checkbox stylen und Attribute setzen
+        var $newLastItem = $('ul.todo-list > li').last();
+        styleCheckbox($newLastItem.find('input[type="checkbox"]'));
+        setCheckboxAttributes($newLastItem.find('input[type="checkbox"]'), uniqueItemID++);
 
         //Editiermodus für neues Item aktivieren
+        setEditModeItem($newLastItem);
 
         //Event Handler hinzufügen
 
+            /*Edit Arrow Button -> Open Menu Bar*/
+            $newLastItem.find('.arrow-btn').on('click', function () {
+                onArrowClick($(this).closest('li'));
+            });
+
+            /*set Edit Mode Icon Functionality*/
+
+            /*Remove Function*/
+            $newLastItem.find('.remove-btn').on('click', function () {
+                removeItem($(this).closest('ul.todo-list > li'));
+            });
+
+            /*Edit Function*/
+            $newLastItem.find('.edit-btn').on('click', function () {
+                setEditModeItem($(this).closest('ul.todo-list > li'));
+            });
+
+            /*Duplicate Function*/
+            $newLastItem.find('.duplicate-btn').on('click', function () {
+                var $newItem = duplicateItem($(this).closest('ul.todo-list > li'));
+                /*Item Editier Modus beenden vor Erzeugen*/
+                if (editItem) {
+                    unEditModeItem();
+                }
+
+                fadeInItem($newItem);
+            });
+
+            //add enter event via custom jQuery function to new input field
+            $newLastItem.find('input[type="text"]').pressEnter(function (event) {
+                if (editItem) {               //wird ein Listen-Item editiert?
+                    if (event.target == editItem.find('input[type="text"]')[0]) {   //entspricht das Event Target dem editierten Item?
+                        unEditModeItem();                                 //Beenden des Editiermodus
+                    }
+                }
+            });
+
         //neues Item einblenden
+        fadeInItem($newLastItem);
     }
 
     function onNewListClick() {
         //Aufgabenteil b)
 
         //alle list items löschen
+        $('ul.todo-list').remove();
+        $('ul.footer-list').before($templateUL);
 
         //Variablen-Werte zurücksetzen
+        var i = 0;
+        $('ul.menu-list.todo-list li :checkbox').each(function (i) {
+            console.log(i);
+            setCheckboxAttributes($(this), i);
+            styleCheckbox($(this));
+        });
 
         //neues, leeres List Item erstellen
+        createNewItem();
     }
 
     function fadeInItem($item) {
