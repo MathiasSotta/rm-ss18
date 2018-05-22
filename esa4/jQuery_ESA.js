@@ -145,6 +145,7 @@ jQuery(document).ready(function ($) {
     function unEditModeItem() {
         var tf = editItem.find('input[type="text"]');
         tf.attr('readonly', 'readonly');
+        tf.attr('value', tf.val());
         tf.off('blur', unEditModeItem);
         editItem.removeClass('edit-mode');
 
@@ -165,6 +166,11 @@ jQuery(document).ready(function ($) {
         //Checkbox stylen und Attribute setzen
         var $newLastItem = $('ul.todo-list > li').last();
         styleCheckbox($newLastItem.find('input[type="checkbox"]'));
+
+        // // Listen-ID nach jeder Änderug neu setzen
+        // $('ul.todo-list > li :checkbox').each( function (i) {
+        //     setCheckboxAttributes($(this), i)
+        // });
         setCheckboxAttributes($newLastItem.find('input[type="checkbox"]'), uniqueItemID++);
 
         //Editiermodus für neues Item aktivieren
@@ -221,15 +227,12 @@ jQuery(document).ready(function ($) {
         $('ul.footer-list').before($templateUL);
 
         //Variablen-Werte zurücksetzen
-        var i = 0;
-        $('ul.menu-list.todo-list li :checkbox').each(function (i) {
-            console.log(i);
-            setCheckboxAttributes($(this), i);
-            styleCheckbox($(this));
-        });
+        uniqueItemID = $('ul.todo-list > li').length;
+        //console.log(uniqueItemID);
 
         //neues, leeres List Item erstellen
         createNewItem();
+
     }
 
     function fadeInItem($item) {
