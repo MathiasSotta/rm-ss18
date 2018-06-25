@@ -1,7 +1,8 @@
 import 'phaser';
 
-import { GameMenuScene } from './scenes/game-menu-scene';
+import { GameMenuScene } from './scenes/gameMenuScene';
 import { HearTheAnimalsScene } from './scenes/hearTheAnimalsScene';
+import {GuessTheAnimalsScene} from "./scenes/guessTheAnimalsScene";
 
 export const gameConfig = {
   width: 800,
@@ -9,6 +10,7 @@ export const gameConfig = {
   scene: [
       GameMenuScene,
       HearTheAnimalsScene,
+      GuessTheAnimalsScene,
   ]
 };
 

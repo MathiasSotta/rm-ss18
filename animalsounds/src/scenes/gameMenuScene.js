@@ -1,4 +1,5 @@
 import * as Phaser from "phaser";
+import { GuessTheAnimalsScene } from './guessTheAnimalsScene';
 import { HearTheAnimalsScene } from './hearTheAnimalsScene';
 import{ gameConfig } from '../index.js';
 
@@ -8,12 +9,16 @@ export class GameMenuScene extends Phaser.Scene {
             key: 'GameMenuScene'
         });
     }
-  preload() {
+
+    preload() {
+
+    // LOAD ANY ASSETS HERE
     this.load.image('cokecan', 'assets/cokecan.png');
+    this.load.atlas('animaltest', 'assets/animals1.png', 'assets/animals1.json');
 
   }
 
-  create() {
+    create() {
 
     this.add.text(gameConfig.width/2, gameConfig.height/3.5, 'Animal Sounds', { fill: '#0f0', fontFamily: 'Arial', fontSize: 64, color: '#00ff00' }).setOrigin(0.5);
     //let text1 = new Text(gameConfig.width/2, gameConfig.height/3.5, 'Centered', { fill: '#0f0', fontFamily: 'Arial', fontSize: 64, color: '#00ff00' });
@@ -41,12 +46,15 @@ export class GameMenuScene extends Phaser.Scene {
     text2.setName('text2');
     text2.setInteractive(new Phaser.Geom.Rectangle(0, 0, text2.width, text2.height), Phaser.Geom.Rectangle.Contains);
     text2.addListener('pointerdown', function(event){
-          console.log("text 2 pressed");
-      }, this);
+        console.log("text 2 pressed");
+        this.scene.launch('GuessTheAnimalsScene');
+        this.scene.bringToTop();
+        this.scene.stop('GameMenuScene');
+    }, this);
 
     // interactive event on mouseover for Game Menu entries
     this.input.on('gameobjectover', function (pointer, gameObject) {
-        gameObject.setTint(0xff0000, 0xff0000, 0xffff00, 0xff00ff);
+        gameObject.setTint(0x0000ff, 0xffff00, 0xffff00, 0x0000ff);
 
     });
     this.input.on('gameobjectout', function (pointer, gameObject) {
@@ -54,34 +62,7 @@ export class GameMenuScene extends Phaser.Scene {
     });
 
 
-
-
-      // // title game one
-    // this.add.text(gameConfig.width/2, gameConfig.height/2, 'Hear the animal', { fill: '#0f0', fontFamily: 'Arial', fontSize: 24, color: '#00ff00' }).setOrigin(0.5);
-    //
-    // // title game two
-    // this.add.text(gameConfig.width/2, gameConfig.height/1.8, 'Guess the animal', { fill: '#0f0', fontFamily: 'Arial', fontSize: 24, color: '#00ff00' }).setOrigin(0.5);
-    //
-    // text.setInteractive(new Phaser.Geom.Rectangle(0, 0, text.width, text.height), Phaser.Geom.Rectangle.Contains);
-
-
-
-    // this.input.on('pointerdown', function(pointer) {
-    //     console.log(group.item);
-    //     });
-
-    console.log("Scene Key: " + this.scene.key);
-
-
-    // this.input.once('pointerdown', function (event) {
-    //
-    // this.scene.start('HearTheAnimalsScene');
-    // this.scene.stop('GameMenuScene');
-    // this.scene.bringToTop();
-    // console.log('from simple to A');
-    //
-    //   }, this);
-
+    //console.log("Scene Key: " + this.scene.key);
 
   }
 
