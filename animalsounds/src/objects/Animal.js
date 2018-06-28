@@ -6,7 +6,7 @@ export class Animal extends Phaser.GameObjects.Sprite {
         this.scene = config.scene;
         this.name = config.sprite;
         this.sprite = config.sprite;
-        this.sound = config.sound;
+        this.sound = config.audio;
         this.x = config.x;
         this.y = config.y;
         this.scale = config.scale;
@@ -17,13 +17,21 @@ export class Animal extends Phaser.GameObjects.Sprite {
         // console.log(this);
 
         // render animal on creation
-        this.scene.add.sprite(this.x, this.y, 'animaltest', this.sprite).setScale(this.scale).setOrigin(0.5);
+        let animalSprite = this.scene.add.sprite(this.x, this.y, 'animaltest', this.sprite).setScale(this.scale).setInteractive().setOrigin(0.5);
+        animalSprite.name = this.name;
+        animalSprite.class = 'animal';
 
-        //
     }
 
     getScale(){
         return this.scale;
     }
 
+    getSound() {
+        return this.sound;
+    }
+
+    getName() {
+        return this.name;
+    }
 }

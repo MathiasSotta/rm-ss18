@@ -1,17 +1,15 @@
 import { Animal } from "./Animal";
 
-// put all animals in array
+// put all animals into an array
 let animalArri = [];
-
 
 export class AnimalController {
 
     constructor(theScene) {
         this.animals = animalArri;
         this.scene = theScene;
-        let animalSprites = theScene.textures.list.animaltest.frames;
 
-        // wtf .. using static array here
+        // using static array here o_O
         let animalNames = [
             'giraffe',
             'rabbit',
@@ -40,8 +38,8 @@ export class AnimalController {
         // create 5 random animals from spriteList and set their position
         for (let i=0; i<5; i++) {
             let picked = Phaser.Utils.Array.RemoveRandomElement(pickIt);
-            console.log("i=" + i);
-            console.log("pick=" + picked);
+            // console.log("i=" + i);
+            // console.log("pick=" + picked);
 
             // add selected animal
             animalArri.push(
@@ -50,18 +48,32 @@ export class AnimalController {
                     x: positions[i].x,
                     y: positions[i].y,
                     sprite: picked,
-                    audio: '',
+                    audio: picked,
                     scale: .3,
                 })
             );
         }
-        console.log(pickIt);
+        //console.log(pickIt);
 
     }
 
     getAnimals() {
         return this.animals;
     }
+
+    randomPickAnimal() {
+        let pickRandom = Phaser.Utils.Array.GetRandom(this.animals);
+        return pickRandom.name;
+    };
+
+    getAnimalByName(animalName) {
+        for (let item of this.animals) {
+            if(item.name === animalName) {
+                // console.log(item);
+                return item;
+            }
+        }
+    };
 
 
 }

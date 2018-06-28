@@ -12,9 +12,15 @@ export class GameMenuScene extends Phaser.Scene {
 
     preload() {
 
-    // LOAD ANY ASSETS HERE
+    // preload assets
     this.load.image('cokecan', 'assets/cokecan.png');
     this.load.atlas('animaltest', 'assets/animals1.png', 'assets/animals1.json');
+    this.load.audioSprite('sfx', 'assets/audio/sfx.json', [
+        'assets/audio/sfx.ogg',
+        'assets/audio/sfx.mp3'
+    ], {
+        instances: 4
+    });
 
   }
 
