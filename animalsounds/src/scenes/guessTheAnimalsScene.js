@@ -1,6 +1,6 @@
 import 'phaser';
-import { GameMenuScene } from './gameMenuScene';
-import { Animal } from "../objects/Animal";
+import {GameMenuScene} from './gameMenuScene';
+import {Animal} from "../objects/Animal";
 import {AnimalController} from "../objects/AnimalController";
 import {gameConfig} from "../index";
 import * as Phaser from "phaser";
@@ -10,113 +10,107 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
         super({
             key: 'GuessTheAnimalsScene'
         });
+
     }
-  preload() {
 
-  }
+    preload() {
 
-  create() {
 
-    console.log('GuessTheAnimalsScene started');
-    this.add.text(gameConfig.width/2, 100, 'GuessTheAnimalsScene', { fill: '#df0' }).setOrigin(.5);
+    }
 
-    // let the dogs out
-    let animals = new AnimalController(this);
+    create() {
 
-    // random pick an animal to hear its sound
-    let pickAnAnimal = animals.randomPickAnimal();
+        console.log('GuessTheAnimalsScene started');
+        // let the dogs out
+        let animals = new AnimalController(this);
 
-    // create playbutton & make it interactive
-    let graphics = this.add.graphics();
-    var color = 0xff4400;
-    var thickness = 4;
-    var alpha = 1;
+        this.initGameBoardElements(animals);
 
-    graphics.fillStyle(0xffffff, alpha);
+    }
 
-    var a = new Phaser.Geom.Point(400, 400);
-    var b = new Phaser.Geom.Point(400, 430);
-    var c = new Phaser.Geom.Point(425, 415);
+    initGameBoardElements(animals) {
 
-    graphics.fillCircle(a.x+10, a.y+15, 30);
-    graphics.fillStyle(color, alpha);
-    graphics.fillTriangle(a.x, a.y, b.x, b.y, c.x, c.y);
+        this.add.text(gameConfig.width / 2, 100, 'GuessTheAnimalsScene', {fill: '#df0'}).setOrigin(.5);
 
-    graphics.setInteractive(new Phaser.Geom.Circle(a.x+10, a.y+15, 30), Phaser.Geom.Circle.Contains);
+        // load sounds
+        let sound = this.sound.addAudioSprite('sfx');
 
-    graphics.on('pointerover', function () {
-      console.log("playbtn hovered");
-      graphics.clear();
-      graphics.fillStyle(0xffff00, 1);
-      graphics.fillCircle(a.x+10, a.y+15, 30);
-      graphics.fillStyle(color, alpha);
-      graphics.fillTriangle(a.x, a.y, b.x, b.y, c.x, c.y);
-    });
+        // random pick an animal to hear its sound
+        let pickAnAnimal = animals.randomPickAnimal();
 
-    graphics.on('pointerout', function () {
-      graphics.clear();
-      graphics.fillStyle(0xffffff, alpha);
-      graphics.fillCircle(a.x+10, a.y+15, 30);
-      graphics.fillStyle(color, alpha);
-      graphics.fillTriangle(a.x, a.y, b.x, b.y, c.x, c.y);
-    });
+        // create playbutton & make it interactive
+        let playButton = this.add.graphics();
+        const color = 0xff4400;
+        const thickness = 4;
+        const alpha = 1;
 
-    graphics.on('pointerdown', function () {
+        playButton.fillStyle(0xffffff, alpha);
 
-        console.log(pickAnAnimal);
+        const a = new Phaser.Geom.Point(400, 400);
+        const b = new Phaser.Geom.Point(400, 430);
+        const c = new Phaser.Geom.Point(425, 415);
 
-        let animalPicked = animals.getAnimalByName(pickAnAnimal);
-        // console.log(animals.getAnimals());
-        //console.log(animalPicked);
-        this.scene.sound.playAudioSprite('sfx', pickAnAnimal);
+        playButton.fillCircle(a.x + 10, a.y + 15, 30);
+        playButton.fillStyle(color, alpha);
+        playButton.fillTriangle(a.x, a.y, b.x, b.y, c.x, c.y);
 
-        //console.log(this.scene.children.list);
+        playButton.setInteractive(new Phaser.Geom.Circle(a.x + 10, a.y + 15, 30), Phaser.Geom.Circle.Contains);
 
-        // now make animals interactive
-        for (let animalSprites of this.scene.children.list) {
+        playButton.on('pointerover', function () {
+            console.log("playbtn hovered");
+            playButton.clear();
+            playButton.fillStyle(0xffff00, 1);
+            playButton.fillCircle(a.x + 10, a.y + 15, 30);
+            playButton.fillStyle(color, alpha);
+            playButton.fillTriangle(a.x, a.y, b.x, b.y, c.x, c.y);
+        });
 
-            if (animalSprites.type === "Sprite" && animalSprites.class === "animal") {
+        playButton.on('pointerout', function () {
+            playButton.clear();
+            playButton.fillStyle(0xffffff, alpha);
+            playButton.fillCircle(a.x + 10, a.y + 15, 30);
+            playButton.fillStyle(color, alpha);
+            playButton.fillTriangle(a.x, a.y, b.x, b.y, c.x, c.y);
+        });
 
-                animalSprites.on('pointerdown', function () {
-                    // console.log(animalSprites);
-                    console.log(animalSprites.name + " clicked");
+        playButton.on('pointerdown', function () {
 
-                    // react on user input
-                    // winner takes it all
-                    if (pickAnAnimal === animalSprites.name) {
-                        this.scene.sound.playAudioSprite('sfx', 'smb_stage_clear');
-                    }
-                    // not that one
-                    else this.scene.sound.playAudioSprite('sfx', 'smb_mariodie');
+            if (sound.isPlaying) {
+                sound.stop();
+            }
+            console.log("Looking for: " + pickAnAnimal);
+            sound.play(pickAnAnimal);
 
-                });
+            //console.log(this.scene.children.list);
+
+            // now make animals interactive
+            for (let animalSprites of this.scene.children.list) {
+
+                if (animalSprites.type === "Sprite" && animalSprites.class === "animal") {
+
+                    animalSprites.on('pointerdown', function () {
+
+                        console.log(animalSprites.name + " clicked");
+
+                        if (sound.isPlaying) {
+                            sound.stop();
+                        }
+
+                        // winner takes it all
+                        if (pickAnAnimal === animalSprites.name) {
+                            sound.play('smb_stage_clear');
+                        }
+                        // not that one
+                        else sound.play('smb_mariodie');
+
+                    });
+                }
+
             }
 
-        }
-       // this.setAnimalsInteractive();
+            // ToDo: play random animal sound & animation, fill scoreboard
 
-
-      // ToDo: play random animal sound & animation, fill scoreboard
-
-    });
-
-
-
-
-    // this.input.once('pointerdown', function (event) {
-    //     this.scene.start('GameMenuScene');
-    //     this.scene.bringToTop();
-    //     this.scene.stop('GuessTheAnimalsScene');
-    //     console.log('From GuessTheAnimalsScene back to simple');
-    // }, this);
-
-  }
-    setAnimalsInteractive() {
-        sprite.on('pointerdown', function (pointer, gameObject) {
-            if (gameObject.name === pickAnAnimal) {
-                console.log(gameObject.name);
-            }
-        })
+        });
     }
 
 }

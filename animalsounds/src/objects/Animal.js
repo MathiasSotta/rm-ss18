@@ -1,15 +1,14 @@
 export class Animal extends Phaser.GameObjects.Sprite {
     constructor(config) {
-        super(config.scene, config.x, config.y, config.sprite, config.audio, config.scale);
-        //config.scene.physics.world.enable(this);
-        //this.scene.add.existing(this);
+        super(config.scene, config.x, config.y, config.sprite);
         this.scene = config.scene;
-        this.name = config.sprite;
+        this.name = config.name;
         this.sprite = config.sprite;
         this.sound = config.audio;
         this.x = config.x;
         this.y = config.y;
         this.scale = config.scale;
+
         this.setDataEnabled();
 
         // console.log("X: " + this.x);
@@ -23,7 +22,7 @@ export class Animal extends Phaser.GameObjects.Sprite {
 
     }
 
-    getScale(){
+    getScale() {
         return this.scale;
     }
 

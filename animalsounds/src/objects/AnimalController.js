@@ -1,4 +1,4 @@
-import { Animal } from "./Animal";
+import {Animal} from "./Animal";
 
 // put all animals into an array
 let animalArri = [];
@@ -6,6 +6,7 @@ let animalArri = [];
 export class AnimalController {
 
     constructor(theScene) {
+        console.log("in constructor AC");
         this.animals = animalArri;
         this.scene = theScene;
 
@@ -36,8 +37,8 @@ export class AnimalController {
         ];
 
         // create 5 random animals from spriteList and set their position
-        for (let i=0; i<5; i++) {
-            let picked = Phaser.Utils.Array.RemoveRandomElement(pickIt);
+        for (let i = 0; i < 5; i++) {
+            let pickedAnimal = Phaser.Utils.Array.RemoveRandomElement(pickIt);
             // console.log("i=" + i);
             // console.log("pick=" + picked);
 
@@ -47,9 +48,10 @@ export class AnimalController {
                     scene: this.scene,
                     x: positions[i].x,
                     y: positions[i].y,
-                    sprite: picked,
-                    audio: picked,
+                    sprite: pickedAnimal,
+                    audio: pickedAnimal,
                     scale: .3,
+                    name: pickedAnimal,
                 })
             );
         }
@@ -68,7 +70,7 @@ export class AnimalController {
 
     getAnimalByName(animalName) {
         for (let item of this.animals) {
-            if(item.name === animalName) {
+            if (item.name === animalName) {
                 // console.log(item);
                 return item;
             }
