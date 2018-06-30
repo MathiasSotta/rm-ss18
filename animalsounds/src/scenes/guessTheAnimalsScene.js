@@ -22,13 +22,12 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
 
         console.log('GuessTheAnimalsScene started');
         // let the dogs out
-        let animals = new AnimalController(this);
+        let animals = new AnimalController({scene: this});
+
+        let children  = this.scene.children;
+
         // initialize the game board
-        this.initGameBoardElements(animals);
-
-    }
-
-    initGameBoardElements(animals) {
+        /*this.initGameBoardElements(animals);*/
 
         this.add.text(gameConfig.width / 2, 100, 'GuessTheAnimalsScene', {fill: '#df0'}).setOrigin(.5);
 
@@ -75,6 +74,8 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
             playButton.fillTriangle(a.x, a.y, b.x, b.y, c.x, c.y);
         });
 
+        console.log(this.children);
+
         playButton.on('pointerdown', function () {
 
             if (sound.isPlaying) {
@@ -105,6 +106,14 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
                             score += 100;
                             scoreText.setText('Score: ' + score);
                             console.log(score);
+
+                            // now remove the current (and solved) group of animals
+                            animals.removeAnimalGroup();
+                            // create some new animals
+                            animals.makeAnimals();
+                            // set a new random target
+                            pickAnAnimal = animals.randomPickAnimal();
+
                         }
                         // not that one
                         else sound.play('smb_mariodie');
@@ -114,10 +123,14 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
 
             }
 
-            // ToDo: play random animal sound & animation, fill scoreboard
-
         });
+        console.log(this);
+
+
     }
 
+
 }
+
+
 

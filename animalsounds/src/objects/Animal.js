@@ -9,6 +9,7 @@ export class Animal extends Phaser.GameObjects.Sprite {
         this.y = config.y;
         this.scale = config.scale;
 
+
         this.setDataEnabled();
 
         // console.log("X: " + this.x);
@@ -17,6 +18,7 @@ export class Animal extends Phaser.GameObjects.Sprite {
 
         // render animal on creation
         let animalSprite = this.scene.add.sprite(this.x, this.y, 'animaltest', this.sprite).setScale(this.scale).setInteractive().setOrigin(0.5);
+
         animalSprite.name = this.name;
         animalSprite.class = 'animal';
 
@@ -32,5 +34,9 @@ export class Animal extends Phaser.GameObjects.Sprite {
 
     getName() {
         return this.name;
+    }
+
+    removeGroup() {
+        this.group.destroy(true);
     }
 }

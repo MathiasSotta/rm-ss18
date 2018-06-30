@@ -1,15 +1,22 @@
 import {Animal} from "./Animal";
 
 // put all animals into an array
-let animalArri = [];
+//let animalArri = [];
 
-export class AnimalController {
+export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
 
-    constructor(theScene) {
-        console.log("in constructor AC");
-        this.animals = animalArri;
-        this.scene = theScene;
+    constructor(config) {
+        super(config.scene);
+        this.scene = config.scene;
+        /*this.createAnimals();*/
+        this.group = this.scene.add.group();
+        this.animals = this.group;
 
+        this.makeAnimals()
+
+    }
+
+    makeAnimals() {
         // using static array here o_O
         let animalNames = [
             'giraffe',
@@ -39,35 +46,18 @@ export class AnimalController {
         // create 5 random animals from spriteList and set their position
         for (let i = 0; i < 5; i++) {
             let pickedAnimal = Phaser.Utils.Array.RemoveRandomElement(pickIt);
-            // console.log("i=" + i);
-            // console.log("pick=" + picked);
 
-            // add selected animal
-            animalArri.push(
-                new Animal({
-                    scene: this.scene,
-                    x: positions[i].x,
-                    y: positions[i].y,
-                    sprite: pickedAnimal,
-                    audio: pickedAnimal,
-                    scale: .3,
-                    name: pickedAnimal,
-                })
-            );
+            let newAnimal = this.group.create(positions[i].x, positions[i].y, 'animaltest', pickedAnimal).setScale(.3).setInteractive().setOrigin(0.5);
+            newAnimal.name = pickedAnimal;
+            newAnimal.class = 'animal';
+
         }
-        //console.log(pickIt);
 
     }
 
     getAnimals() {
         return this.animals;
     }
-
-    randomPickAnimal() {
-        let pickRandom = Phaser.Utils.Array.GetRandom(this.animals);
-        return pickRandom.name;
-    };
-
     getAnimalByName(animalName) {
         for (let item of this.animals) {
             if (item.name === animalName) {
@@ -77,5 +67,16 @@ export class AnimalController {
         }
     };
 
+    randomPickAnimal() {
+        let pickRandom = Phaser.Utils.Array.GetRandom(this.animals.getChildren());
+        return pickRandom.name;
+    };
 
+    getGroup() {
+        return this.group;
+    }
+
+    removeAnimalGroup() {
+        this.group.clear(true,true);
+    }
 }
