@@ -23,7 +23,7 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
         console.log('GuessTheAnimalsScene started');
         // let the dogs out
         let animals = new AnimalController(this);
-
+        // initialize the game board
         this.initGameBoardElements(animals);
 
     }
@@ -31,6 +31,9 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
     initGameBoardElements(animals) {
 
         this.add.text(gameConfig.width / 2, 100, 'GuessTheAnimalsScene', {fill: '#df0'}).setOrigin(.5);
+
+        let score = 0;
+        let scoreText = this.add.text(gameConfig.width * .9, gameConfig.height * .9 , 'Score: 0', {fill: '#df0'}).setOrigin(.5);
 
         // load sounds
         let sound = this.sound.addAudioSprite('sfx');
@@ -41,7 +44,6 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
         // create playbutton & make it interactive
         let playButton = this.add.graphics();
         const color = 0xff4400;
-        const thickness = 4;
         const alpha = 1;
 
         playButton.fillStyle(0xffffff, alpha);
@@ -99,6 +101,10 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
                         // winner takes it all
                         if (pickAnAnimal === animalSprites.name) {
                             sound.play('smb_stage_clear');
+
+                            score += 100;
+                            scoreText.setText('Score: ' + score);
+                            console.log(score);
                         }
                         // not that one
                         else sound.play('smb_mariodie');
