@@ -14,18 +14,20 @@ export class GameMenuScene extends Phaser.Scene {
 
         // preload assets
         this.load.image('cokecan', 'assets/cokecan.png');
-        this.load.atlas('animaltest', 'assets/animals1.png', 'assets/animals1.json');
-        this.load.audioSprite('sfx', 'assets/audio/sfx.json', [
-            'assets/audio/sfx.ogg',
-            'assets/audio/sfx.mp3'
+        this.load.atlas('animaltest', 'assets/animals.png', 'assets/animals.json');
+        this.load.audioSprite('sfx', 'assets/audio/animalsounds.json', [
+            'assets/audio/animalsounds.ogg',
+            'assets/audio/animalsounds.mp3'
         ], {
             instances: 4
         });
-
+        this.load.audio('music', 'assets/audio/background_music.mp3');
     }
 
     create() {
-
+        let music = this.sound.add('music');
+        music.loop = true;
+        music.play();
         this.add.text(gameConfig.width / 2, gameConfig.height / 3.5, 'Animal Sounds', {
             fill: '#0f0',
             fontFamily: 'Arial',

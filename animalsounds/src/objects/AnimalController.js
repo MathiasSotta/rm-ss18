@@ -19,7 +19,7 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
     makeAnimals() {
         // using static array here o_O
         let animalNames = [
-            'giraffe',
+/*            'giraffe',
             'rabbit',
             'elephant',
             'monkey',
@@ -28,7 +28,14 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
             'pig',
             'parrot',
             'hippo',
-            'penguin',
+            'penguin',*/
+            'goose',
+            'elephant',
+            'pig',
+            'rooster',
+            'cow',
+            'dog',
+            'cat',
         ];
 
         // clone the array, just in case
@@ -47,10 +54,9 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
         for (let i = 0; i < 5; i++) {
             let pickedAnimal = Phaser.Utils.Array.RemoveRandomElement(pickIt);
 
-            let newAnimal = this.group.create(positions[i].x, positions[i].y, 'animaltest', pickedAnimal).setScale(.3).setInteractive().setOrigin(0.5);
+            let newAnimal = this.group.create(positions[i].x, positions[i].y, 'animaltest', pickedAnimal).setScale(.5).setInteractive().setOrigin(0.5);
             newAnimal.name = pickedAnimal;
             newAnimal.class = 'animal';
-
         }
 
     }

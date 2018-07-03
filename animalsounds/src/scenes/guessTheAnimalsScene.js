@@ -101,7 +101,7 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
 
                         // winner takes it all
                         if (pickAnAnimal === animalSprites.name) {
-                            sound.play('smb_stage_clear');
+                            sound.play('success');
 
                             score += 100;
                             scoreText.setText('Score: ' + score);
@@ -116,7 +116,7 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
 
                         }
                         // not that one
-                        else sound.play('smb_mariodie');
+                        else sound.play('wrong');
 
                     });
                 }
