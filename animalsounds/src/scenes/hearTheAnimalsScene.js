@@ -1,5 +1,6 @@
 import 'phaser';
 import {GameMenuScene} from './gameMenuScene';
+import {gameConfig} from "../index";
 
 export class HearTheAnimalsScene extends Phaser.Scene {
     constructor(test) {
@@ -9,15 +10,16 @@ export class HearTheAnimalsScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('cokecan', 'assets/cokecan.png');
 
     }
 
     create() {
         console.log('HearTheAnimalsScene started');
-        this.add.text(100, 100, 'HearTheAnimals !', {fill: '#0f0'});
+        console.log(this.scene);
 
-        this.add.image(100, 200, 'cokecan');
+        // ToDo: Remove Helper texts
+        this.add.text(gameConfig.width / 2, 100, this.scene.key, {fill: '#df0'}).setOrigin(.5);
+
 
         // console.log("Scene Key: "  + this.scene.key);
 

@@ -21,18 +21,16 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
     create() {
 
         console.log('GuessTheAnimalsScene started');
+
         // let the dogs out
         let animals = new AnimalController({scene: this});
 
-        let children  = this.scene.children;
-
-        // initialize the game board
-        /*this.initGameBoardElements(animals);*/
-
+        // ToDo: Remove Helper texts
         this.add.text(gameConfig.width / 2, 100, 'GuessTheAnimalsScene', {fill: '#df0'}).setOrigin(.5);
 
+        // init score vars
         let score = 0;
-        let scoreText = this.add.text(gameConfig.width * .9, gameConfig.height * .9 , 'Score: 0', {fill: '#df0'}).setOrigin(.5);
+        let scoreText = this.add.text(gameConfig.width * .9, gameConfig.height * .9, 'Score: 0', {fill: '#df0'}).setOrigin(.5);
 
         // load sounds
         let sound = this.sound.addAudioSprite('sfx');
@@ -124,8 +122,6 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
             }
 
         });
-        console.log(this);
-
 
     }
 

@@ -16,6 +16,8 @@ export const gameConfig = {
     audio: {
         disableWebAudio: true
     },
+    animalspriteWidth: 300,
+    animalspriteHeight: 300,
 };
 
 new Phaser.Game(gameConfig);

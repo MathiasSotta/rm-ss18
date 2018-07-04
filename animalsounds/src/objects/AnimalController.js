@@ -1,4 +1,5 @@
 import {Animal} from "./Animal";
+import {gameConfig} from "../index";
 
 // put all animals into an array
 //let animalArri = [];
@@ -11,24 +12,13 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
         /*this.createAnimals();*/
         this.group = this.scene.add.group();
         this.animals = this.group;
-
-        this.makeAnimals()
-
+        this.makeAnimals();
     }
 
     makeAnimals() {
+
         // using static array here o_O
         let animalNames = [
-/*            'giraffe',
-            'rabbit',
-            'elephant',
-            'monkey',
-            'panda',
-            'snake',
-            'pig',
-            'parrot',
-            'hippo',
-            'penguin',*/
             'goose',
             'elephant',
             'pig',
@@ -38,32 +28,18 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
             'cat',
         ];
 
-        // clone the array, just in case
-        let pickIt = animalNames.slice(0);
-
         // define static start positions for the animals
-        let positions = [
-            {x: 100, y: 100},
-            {x: 400, y: 200},
-            {x: 700, y: 100},
-            {x: 200, y: 300},
-            {x: 600, y: 300}
-        ];
+        let positions = AnimalController.getAnimalPosition(this.scene);
 
-        // create 5 random animals from spriteList and set their position
-        for (let i = 0; i < 5; i++) {
-            let pickedAnimal = Phaser.Utils.Array.RemoveRandomElement(pickIt);
-
-            let newAnimal = this.group.create(positions[i].x, positions[i].y, 'animaltest', pickedAnimal).setScale(.5).setInteractive().setOrigin(0.5);
-            newAnimal.name = pickedAnimal;
-            newAnimal.class = 'animal';
-        }
+        // instantiate Animals according to the current scene
+        let inPosition = this.setAnimalsInScene(animalNames, positions);
 
     }
 
     getAnimals() {
         return this.animals;
     }
+
     getAnimalByName(animalName) {
         for (let item of this.animals) {
             if (item.name === animalName) {
@@ -72,6 +48,48 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
             }
         }
     };
+
+    static getAnimalPosition(theScene) {
+        let p;
+        let w = gameConfig.width;
+        let h = gameConfig.height;
+        if (theScene.sys.config.key === 'GuessTheAnimalsScene') {
+            p = [
+                {x: (w / 2), y: h / 5},
+                {x: (w / 5) * 4, y: (h / 5) * 2},
+                {x: (w / 5) * 3.5, y: (h / 5) * 4},
+                {x: (w / 5) * 1.5, y: (h / 5) * 4},
+                {x: w / 5, y: (h / 5) * 2}
+            ];
+        }
+        else if (theScene.sys.config.key === 'HearTheAnimalsScene') {
+            p = [
+                {x: gameConfig.width / 2, y: gameConfig.height / 2}
+            ];
+        }
+        return p;
+    }
+
+    setAnimalsInScene(animalNames, positions) {
+
+        let sceneKey = this.scene.sys.config.key;
+        // clone the array, just in case
+        let pickIt = animalNames.slice(0);
+
+        if (sceneKey === 'GuessTheAnimalsScene') {
+
+            // create 5 random animals from spriteList and set their position
+            for (let i = 0; i < 5; i++) {
+                let pickedAnimal = Phaser.Utils.Array.RemoveRandomElement(pickIt);
+                let newAnimal = this.group.create(positions[i].x, positions[i].y, 'animalic', pickedAnimal).setScale(.5).setInteractive().setOrigin(0.5);
+                newAnimal.name = pickedAnimal;
+                newAnimal.class = 'animal';
+            }
+        }
+        else if(sceneKey === 'HearTheAnimalsScene') {
+
+        }
+    }
 
     randomPickAnimal() {
         let pickRandom = Phaser.Utils.Array.GetRandom(this.animals.getChildren());
@@ -83,6 +101,8 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
     }
 
     removeAnimalGroup() {
-        this.group.clear(true,true);
+        this.group.clear(true, true);
     }
+
+
 }
