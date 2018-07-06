@@ -9,7 +9,6 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
     constructor(config) {
         super(config.scene);
         this.scene = config.scene;
-        /*this.createAnimals();*/
         this.group = this.scene.add.group();
         this.animals = this.group;
         this.makeAnimals();
@@ -55,11 +54,11 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
         let h = gameConfig.height;
         if (theScene.sys.config.key === 'GuessTheAnimalsScene') {
             p = [
-                {x: (w / 2), y: h / 5},
-                {x: (w / 5) * 4, y: (h / 5) * 2},
-                {x: (w / 5) * 3.5, y: (h / 5) * 4},
-                {x: (w / 5) * 1.5, y: (h / 5) * 4},
-                {x: w / 5, y: (h / 5) * 2}
+                {x: (w / 2), y: h / 4},
+                {x: (w / 5) * 4, y: (h / 4) * 2},
+                {x: (w / 5) * 3.5, y: (h / 4) * 3.2},
+                {x: (w / 5) * 1.5, y: (h / 4) * 3.2},
+                {x: w / 5, y: (h / 4) * 2}
             ];
         }
         else if (theScene.sys.config.key === 'HearTheAnimalsScene') {
@@ -81,12 +80,12 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
             // create 5 random animals from spriteList and set their position
             for (let i = 0; i < 5; i++) {
                 let pickedAnimal = Phaser.Utils.Array.RemoveRandomElement(pickIt);
-                let newAnimal = this.group.create(positions[i].x, positions[i].y, 'animalic', pickedAnimal).setScale(.5).setInteractive().setOrigin(0.5);
+                let newAnimal = this.group.create(positions[i].x, positions[i].y, 'animalic', pickedAnimal).setScale(.5).setOrigin(0.5);
                 newAnimal.name = pickedAnimal;
                 newAnimal.class = 'animal';
             }
         }
-        else if(sceneKey === 'HearTheAnimalsScene') {
+        else if (sceneKey === 'HearTheAnimalsScene') {
 
         }
     }
@@ -102,7 +101,11 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
 
     removeAnimalGroup() {
         this.group.clear(true, true);
+
+
     }
 
-
+    soundIsPlaying() {
+        return this.scene.sound.duration;
+    }
 }

@@ -15,6 +15,7 @@ export class GameMenuScene extends Phaser.Scene {
         // preload assets
         this.load.image('cokecan', 'assets/cokecan.png');
         this.load.atlas('animalic', 'assets/animals.png', 'assets/animals.json');
+        this.load.spritesheet('playbutton', 'assets/playbutton.png', { frameWidth: 300, frameHeight: 300 });
         this.load.audioSprite('sfx', 'assets/audio/animalsounds.json', [
             'assets/audio/animalsounds.ogg',
             'assets/audio/animalsounds.mp3'
