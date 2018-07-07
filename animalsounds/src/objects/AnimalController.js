@@ -54,11 +54,11 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
         let h = gameConfig.height;
         if (theScene.sys.config.key === 'GuessTheAnimalsScene') {
             p = [
-                {x: (w / 2), y: h / 4},
-                {x: (w / 5) * 4, y: (h / 4) * 2},
-                {x: (w / 5) * 3.5, y: (h / 4) * 3.2},
-                {x: (w / 5) * 1.5, y: (h / 4) * 3.2},
-                {x: w / 5, y: (h / 4) * 2}
+                {x: (w / 2), y: h / 4}, //center top position
+                {x: (w / 5) * 4, y: (h / 4) * 1.9},// right middle
+                {x: (w / 5) * 3.5, y: (h / 4) * 3.2}, // right bottom
+                {x: (w / 5) * 1.5, y: (h / 4) * 3.2}, // left bottom
+                {x: w / 5, y: (h / 4) * 1.9} // left-middle
             ];
         }
         else if (theScene.sys.config.key === 'HearTheAnimalsScene') {
@@ -73,20 +73,31 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
 
         let sceneKey = this.scene.sys.config.key;
         // clone the array, just in case
-        let pickIt = animalNames.slice(0);
+        let animalArri = animalNames.slice(0);
 
         if (sceneKey === 'GuessTheAnimalsScene') {
 
             // create 5 random animals from spriteList and set their position
             for (let i = 0; i < 5; i++) {
-                let pickedAnimal = Phaser.Utils.Array.RemoveRandomElement(pickIt);
+                let pickedAnimal = Phaser.Utils.Array.RemoveRandomElement(animalArri);
                 let newAnimal = this.group.create(positions[i].x, positions[i].y, 'animalic', pickedAnimal).setScale(.5).setOrigin(0.5);
+                newAnimal.key = pickedAnimal;
                 newAnimal.name = pickedAnimal;
                 newAnimal.class = 'animal';
             }
         }
         else if (sceneKey === 'HearTheAnimalsScene') {
-
+            // create all animals from spriteList
+            for (let animal of animalArri) {
+                let newAnimal = this.group.create(positions[0].x, positions[0].y, 'animalic', animal).setScale(.8).setOrigin(0.5).setVisible(false);
+                newAnimal.key = animal;
+                newAnimal.name = animal;
+                newAnimal.class = 'animal';
+                newAnimal.setInteractive();
+                newAnimal.on('pointerup', function () {
+                    console.log("animal clicked");
+                });
+            }
         }
     }
 
@@ -101,8 +112,6 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
 
     removeAnimalGroup() {
         this.group.clear(true, true);
-
-
     }
 
     soundIsPlaying() {

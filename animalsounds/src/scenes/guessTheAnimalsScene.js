@@ -6,6 +6,8 @@ import {AnimalController} from "../objects/AnimalController";
 import {gameConfig} from "../index";
 import * as Phaser from "phaser";
 
+let playButton;
+
 export class GuessTheAnimalsScene extends Phaser.Scene {
 
     constructor() {
@@ -32,6 +34,7 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
 
         // let the dogs out
         let animals = new AnimalController({scene: this});
+        let animalSprites = animals.getGroup().getChildren();
 
 
         // ToDo: Remove Helper texts
@@ -45,74 +48,86 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
         let sfx = this.sound.addAudioSprite('sfx');
         // random pick an animal to hear its sound
         let pickAnAnimal = animals.randomPickAnimal();
-        let solved = false;
+        let hit;
 
-        let group = this.add.group();
-        let playButton = this.add.sprite(gameConfig.width / 2, gameConfig.height / 1.75, 'playbutton', 1).setScale(.4).setInteractive().setOrigin(0.5);
-
-        playButton.on('pointerdown', function () {
-            playButton.disableInteractive();
-            playButton.setFrame(0);
-            console.log("Looking for: " + pickAnAnimal);
-
-            sfx.play(pickAnAnimal);
-
-            sfx.on('ended', function () {
-                playButton.setInteractive();
-                playButton.setFrame(1);
-                console.log(pickAnAnimal);
-
-            });
-
-            // make animals interactive
-            for (let animalSprites of theScene.children.list) {
-
-                if (animalSprites.type === "Sprite" && animalSprites.class === "animal") {
-                    // get interactive animals
-                    animalSprites.setInteractive();
-
-                    animalSprites.on('pointerup', function () {
-                        console.log(pickAnAnimal);
-                        console.log(animalSprites.name + " clicked");
-
-                        // winner
-                        if (pickAnAnimal === animalSprites.name) {
-                            animalSprites.disableInteractive();
-                            sfx.play('success');
-                            console.log("success played");
-                            score += 100;
-                            scoreText.setText('Score: ' + score);
-
-                            // now remove the current (and solved) group of animals
-                            animals.removeAnimalGroup();
-                            // create some new animals
-                            animals.makeAnimals();
-                            // set a new random target
-                            pickAnAnimal = animals.randomPickAnimal();
-                        }
-                        else {
-                            // try again
-                            console.log("should be false: " + (pickAnAnimal === animalSprites.name));
-                            sfx.play('wrong');
-                            console.log("wrong played");
-                        }
-                    });
-                }
-            }
-        });
-
-
+        // PLAYBUTTON
+        playButton = this.add.sprite(gameConfig.width / 2, gameConfig.height / 1.75, 'playbutton', 1).setScale(.4).setInteractive().setOrigin(0.5);
 
         // playButton.on('pointerover', function () {
-        //     console.log("playbtn hovered");
         //     this.setFrame(2);
         // });
         //
         // playButton.on('pointerout', function () {
         //     this.setFrame(1);
-        //
         // });
 
+        playButton.on('pointerup', playButtonActivated, playButton);
+
+        sfx.on('ended', onSoundEnded, sfx);
+
+        function onSoundEnded() {
+            playButton.setFrame(1);
+        }
+
+        function playButtonActivated() {
+            console.log(this);
+            //this.disableInteractive();
+
+            this.setFrame(0);
+            console.log("Playbtn clicked + Looking for: " + pickAnAnimal);
+            // console.log(this.scene);
+            sfx.pause();
+            sfx.play(pickAnAnimal);
+
+        }
+
+        // make animals interactive
+        // for (let animalSprites of animals.getGroup().getChildren()) {
+        for(let i=0; i<animalSprites.length; i++) {
+
+            // get interactive animals
+            animalSprites[i].setInteractive();
+            animalSprites[i].on('pointerup', makeAnimalNoises, animalSprites[i]);
+        }
+
+        function makeAnimalNoises() {
+            //theScene.input.stopPropagation();
+            //console.log(pickAnAnimal);
+            console.log(this.name + " clicked");
+            console.log(hit);
+
+            hit = pickAnAnimal === animalSprites.name;
+
+            if (hit === false) {
+                sfx.pause();
+                // try again
+                sfx.play('wrong');
+                console.log(" ___ wrong ... right was :" + pickAnAnimal);
+                theScene.input.stopPropagation();
+            }
+
+            // winner
+            else if (hit === true) {
+                sfx.pause();
+                animalSprites.disableInteractive();
+                console.log("=== success");
+                score += 100;
+                scoreText.setText('Score: ' + score);
+                sfx.play('success');
+
+                // now remove the current (and solved) group of animals
+                animals.removeAnimalGroup();
+                // create some new animals
+                //animals.makeAnimals();
+                // set a new random target
+                theScene.input.stopPropagation();
+                animals = new AnimalController({scene: theScene});
+
+                pickAnAnimal = animals.randomPickAnimal();
+                theScene.input.stopPropagation();
+
+            }
+        }
 
         //console.log(this.scene.children.list);
 

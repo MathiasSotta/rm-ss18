@@ -16,6 +16,7 @@ export class GameMenuScene extends Phaser.Scene {
         this.load.image('cokecan', 'assets/cokecan.png');
         this.load.atlas('animalic', 'assets/animals.png', 'assets/animals.json');
         this.load.spritesheet('playbutton', 'assets/playbutton.png', { frameWidth: 300, frameHeight: 300 });
+        this.load.spritesheet('arrow', 'assets/arrow.png', { frameWidth: 150, frameHeight: 400 });
         this.load.audioSprite('sfx', 'assets/audio/animalsounds.json', [
             'assets/audio/animalsounds.ogg',
             'assets/audio/animalsounds.mp3'
@@ -26,9 +27,13 @@ export class GameMenuScene extends Phaser.Scene {
     }
 
     create() {
-        let music = this.sound.add('music');
-        music.loop = true;
-        music.play();
+        let theScene = this;
+        // init game music
+        // let music = this.sound.add('music');
+        // music.loop = true;
+        // music.play();
+
+
         this.add.text(gameConfig.width / 2, gameConfig.height / 3.5, 'Animal Sounds', {
             fill: '#0f0',
             fontFamily: 'Arial',
@@ -53,11 +58,12 @@ export class GameMenuScene extends Phaser.Scene {
         }).setOrigin(0.5);
         text1.setName('text1');
         text1.setInteractive(new Phaser.Geom.Rectangle(0, 0, text1.width, text1.height), Phaser.Geom.Rectangle.Contains);
-        text1.addListener('pointerdown', function (event) {
+        text1.addListener('pointerup', function (event) {
             console.log("text 1 pressed");
             this.scene.launch('HearTheAnimalsScene');
             this.scene.bringToTop();
             this.scene.stop('GameMenuScene');
+
         }, this);
 
         // create interactive text object for game 1
@@ -69,7 +75,7 @@ export class GameMenuScene extends Phaser.Scene {
         }).setOrigin(0.5);
         text2.setName('text2');
         text2.setInteractive(new Phaser.Geom.Rectangle(0, 0, text2.width, text2.height), Phaser.Geom.Rectangle.Contains);
-        text2.addListener('pointerdown', function (event) {
+        text2.addListener('pointerup', function (event) {
             console.log("text 2 pressed");
             this.scene.launch('GuessTheAnimalsScene');
             this.scene.bringToTop();

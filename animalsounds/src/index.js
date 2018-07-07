@@ -20,5 +20,7 @@ export const gameConfig = {
     animalspriteHeight: 300,
 };
 
+
+
 new Phaser.Game(gameConfig);
 

@@ -1,0 +1,39 @@
+{"frames": [
+
+{
+	"filename": "active",
+	"frame": {"x":0,"y":0,"w":150,"h":400},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":400},
+	"sourceSize": {"w":150,"h":400},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "default",
+	"frame": {"x":150,"y":0,"w":150,"h":400},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":400},
+	"sourceSize": {"w":150,"h":400},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "hover",
+	"frame": {"x":300,"y":0,"w":150,"h":400},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":400},
+	"sourceSize": {"w":150,"h":400},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "arrow.png",
+	"format": "RGBA8888",
+	"size": {"w":450,"h":400},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:59e75f3fc5fb02179c3e9878c55df8eb:ccd46dc9f265229b7dd5511e4a5f0c97:da7b7f302b584bc2843bb50b1ff3bd62$"
+}
+}
