@@ -91,7 +91,7 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
             for (let animal of animalArri) {
                 let newAnimal = this.group.create(positions[0].x, positions[0].y, 'animalic', animal).setScale(.8).setOrigin(0.5).setVisible(false);
                 newAnimal.key = animal;
-                newAnimal.name = animal;
+                //newAnimal.name = animal;
                 newAnimal.class = 'animal';
                 newAnimal.setInteractive();
                 newAnimal.on('pointerup', function () {
@@ -103,7 +103,7 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
 
     randomPickAnimal() {
         let pickRandom = Phaser.Utils.Array.GetRandom(this.animals.getChildren());
-        return pickRandom.name;
+        return pickRandom.key;
     };
 
     getGroup() {

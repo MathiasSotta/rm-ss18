@@ -17,12 +17,14 @@ export class GameMenuScene extends Phaser.Scene {
         this.load.atlas('animalic', 'assets/animals.png', 'assets/animals.json');
         this.load.spritesheet('playbutton', 'assets/playbutton.png', { frameWidth: 300, frameHeight: 300 });
         this.load.spritesheet('arrow', 'assets/arrow.png', { frameWidth: 150, frameHeight: 400 });
-        this.load.audioSprite('sfx', 'assets/audio/animalsounds.json', [
+        this.load.audioSprite('animalsounds', 'assets/audio/animalsounds.json', [
             'assets/audio/animalsounds.ogg',
             'assets/audio/animalsounds.mp3'
-        ], {
-            instances: 4
-        });
+        ]);
+        this.load.audioSprite('gamesounds', 'assets/audio/gamesounds.json', [
+            'assets/audio/gamesounds.ogg',
+            'assets/audio/gamesounds.mp3'
+        ]);
         this.load.audio('music', 'assets/audio/background_music.mp3');
     }
 

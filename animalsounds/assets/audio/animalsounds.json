@@ -40,16 +40,6 @@
       "start": 20,
       "end": 21.787278911564627,
       "loop": false
-    },
-    "success": {
-      "start": 23,
-      "end": 24.130816326530613,
-      "loop": false
-    },
-    "wrong": {
-      "start": 26,
-      "end": 26.21952380952381,
-      "loop": false
     }
   }
 }
