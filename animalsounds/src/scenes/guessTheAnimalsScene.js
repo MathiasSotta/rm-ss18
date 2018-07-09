@@ -31,6 +31,7 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
         let playButton;
         let guessThisAnimal;
         let resetPlayButton = true;
+        let animalsInteractive = false;
         let hit;
 
         console.log('GuessTheAnimalsScene started');
@@ -68,7 +69,7 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
             }
         });
 
-        playButton.on('pointerup', playButtonActivated, playButton);
+        playButton.on('pointerdown', playButtonActivated, playButton);
         animalSounds.on('ended', onSoundEnded, animalSounds);
 
         function playButtonActivated() {
@@ -77,17 +78,20 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
                 guessThisAnimal = animals.randomPickAnimal();
                 resetPlayButton = false;
             }
+            if (!animalsInteractive) {
+                makeAnimalsInteractive();
+                animalsInteractive = true;
+            }
             this.setFrame(0);
             console.log("Playbtn clicked + Looking for: " + guessThisAnimal);
             // console.log(this.scene);
             animalSounds.pause();
             animalSounds.play(guessThisAnimal);
-            makeAnimalsInteractive();
         }
 
         function onSoundEnded() {
             playButton.setFrame(1);
-            playButton.setInteractive();
+            //makeAnimalsInteractive();
         }
 
         function makeAnimalsInteractive() {
@@ -103,36 +107,42 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
             console.log(this.name + " clicked");
             hit = (guessThisAnimal === this.key);
             console.log(this);
+
+            // try again
             if (!hit) {
                 if (animalSounds.isPlaying) {
                     animalSounds.pause();
                 }
-                // try again
                 gameSounds.play('wrong');
                 // console.log(guessThisAnimal);
                 // console.log(this.key);
                 // console.log(" ___ wrong ... right was: " + guessThisAnimal);
                 // console.log(theScene);
-                return this;
+                //return this;
             }
 
             // winner
             if (hit) {
-                //this.disableInteractive();
-                animalSounds.pause();
+                // theScene.input.stopPropagation();
+                if (animalSounds.isPlaying) {
+                    animalSounds.pause();
+                }
+                // playButton.off('pointerup', playButtonActivated, playButton);
                 console.log("=== success");
                 score += 100;
                 scoreText.setText('Score: ' + score);
                 gameSounds.play('success');
-
                 // now remove the current (and solved) group of animals
                 animals.removeAnimalGroup();
                 // create some new animals
                 animals.makeAnimals();
                 // set a new random target
+                playButton.setFrame(1);
                 resetPlayButton = true;
+                animalsInteractive = false;
             }
         }
+
         //console.log(this.scene.children.list);
     }
 

@@ -3,7 +3,7 @@ import {GameMenuScene} from './gameMenuScene';
 import {gameConfig} from "../index";
 import {AnimalController} from "../objects/AnimalController";
 
-let sfx;
+let animalSounds;
 let arrowLeft;
 let arrowRight;
 
@@ -21,7 +21,7 @@ export class HearTheAnimalsScene extends Phaser.Scene {
     create() {
 
         let theScene = this;
-        sfx = this.sound.addAudioSprite('sfx');
+        animalSounds = this.sound.addAudioSprite('animalsounds');
 
         console.log('HearTheAnimalsScene started');
         console.log(this.scene);
@@ -51,8 +51,8 @@ export class HearTheAnimalsScene extends Phaser.Scene {
             animalSprites[i].on('pointerup', playSound, animalSprites[i]);
         }
 
-        sfx.on('ended', resetArrows, this);
-        sfx.on('play', disableArrows, this);
+        animalSounds.on('ended', resetArrows, this);
+        animalSounds.on('play', disableArrows, this);
 
         function disableArrows() {
             arrowLeft.disableInteractive();
@@ -66,9 +66,9 @@ export class HearTheAnimalsScene extends Phaser.Scene {
         }
 
         function playSound() {
-            sfx.pause();
-            sfx.play(this.name);
-            console.log(sfx.isPlaying);
+            animalSounds.pause();
+            animalSounds.play(this.key);
+            console.log(animalSounds.isPlaying);
         }
 
         function rotateAnimals() {
