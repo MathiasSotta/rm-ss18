@@ -26,6 +26,9 @@ export class GameMenuScene extends Phaser.Scene {
             'assets/audio/gamesounds.mp3'
         ]);
         this.load.audio('music', 'assets/audio/background_music.mp3');
+        //animations
+        this.load.atlas('goos', 'assets/animation/goose.png', 'assets/animation/goose.json');
+
     }
 
     create() {

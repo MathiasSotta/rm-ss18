@@ -15,22 +15,25 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
     }
 
     makeAnimals() {
-
-        // using static array here o_O
+        // using static array here o-O
         let animalNames = [
             'goose',
-            'elephant',
-            'pig',
-            'rooster',
-            'cow',
-            'dog',
-            'cat',
+            'goose',
+            'goose',
+            'goose',
+            'goose',
+            // 'elephant',
+            // 'pig',
+            // 'rooster',
+            // 'cow',
+            // 'dog',
+            // 'cat',
         ];
 
         // define static start positions for the animals
         let positions = AnimalController.getAnimalPosition(this.scene);
 
-        // instantiate Animals according to the current scene
+        // instantiate animals according to the current scene
         let inPosition = this.setAnimalsInScene(animalNames, positions);
 
     }
@@ -80,16 +83,18 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
             // create 5 random animals from spriteList and set their position
             for (let i = 0; i < 5; i++) {
                 let pickedAnimal = Phaser.Utils.Array.RemoveRandomElement(animalArri);
-                let newAnimal = this.group.create(positions[i].x, positions[i].y, 'animalic', pickedAnimal).setScale(.5).setOrigin(0.5);
+                let newAnimal = this.group.create(gameConfig.width/2, gameConfig.height/2, 'animalic', pickedAnimal).setInteractive().setScale(0).setOrigin(0.5).setAlpha(0);
                 newAnimal.key = pickedAnimal;
                 newAnimal.name = pickedAnimal;
                 newAnimal.class = 'animal';
+                newAnimal.destinationX = positions[i].x;
+                newAnimal.destinationY = positions[i].y;
             }
         }
         else if (sceneKey === 'HearTheAnimalsScene') {
             // create all animals from spriteList
             for (let animal of animalArri) {
-                let newAnimal = this.group.create(positions[0].x, positions[0].y, 'animalic', animal).setScale(.8).setOrigin(0.5).setVisible(false);
+                let newAnimal = this.group.create(positions[0].x, positions[0].y, 'animalic', animal).setScale(.8).setOrigin(.5).setVisible(false);
                 newAnimal.key = animal;
                 //newAnimal.name = animal;
                 newAnimal.class = 'animal';
