@@ -4,7 +4,7 @@ import {HearTheAnimalsScene} from './hearTheAnimalsScene';
 import {AnimalController} from "../objects/AnimalController";
 import {gameConfig} from '../index.js';
 
-export class GameMenuScene extends Phaser.Scene {
+export class TestScene extends Phaser.Scene {
     constructor(test) {
         super({
             key: 'TestScene'
@@ -27,31 +27,32 @@ export class GameMenuScene extends Phaser.Scene {
             'assets/audio/gamesounds.mp3'
         ]);
         this.load.audio('music', 'assets/audio/background_music.mp3');
-        //animations
+        //animations.js
         this.load.atlas('goos', 'assets/animation/goose.png', 'assets/animation/goose.json');
+        this.load.atlas('gems', 'assets/animation/gems.png', 'assets/animation/gems.json');
 
     }
 
     create() {
+        let theScene = this;
 
+        let animConfig = {
+            key: 'goosy',
+            frames: theScene.anims.generateFrameNames('goos', {prefix: 'goosy_', end: 31, zeroPad: 4}),
+            repeat: 4,
+            //onComplete: resetAnimals,
+        };
 
-        // let animConfig = {
-        //     key: 'goos',
-        //     frames: theScene.anims.generateFrameNames('goos', {prefix: 'goosy_', end: end, zeroPad: 5}),
-        //     repeat: 4,
-        //     //onComplete: resetAnimals,
-        // };
-        //
-        // theScene.anims.create(animConfig);
-        //
-        // let config = {
-        //     key: 'goos',
-        //     x: 100,
-        //     y: 100,
-        //     scale: .5,
-        //     anims: 'goosy'
-        // };
-        // theScene.make.sprite(config);
+        theScene.anims.create(animConfig);
+
+        let config = {
+            key: 'goos',
+            x: 100,
+            y: 100,
+            scale: .5,
+            anims: 'goosy'
+        };
+        theScene.make.sprite(config);
 
     }
 

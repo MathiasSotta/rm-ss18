@@ -26,9 +26,6 @@ export class HearTheAnimalsScene extends Phaser.Scene {
         console.log('HearTheAnimalsScene started');
         console.log(this.scene);
 
-        // ToDo: Remove Helper texts
-        this.add.text(gameConfig.width / 2, 100, this.scene.key, {fill: '#df0'}).setOrigin(.5);
-
         // init Animals
         let animals = new AnimalController({scene: this});
         let animalGroup = animals.getGroup();

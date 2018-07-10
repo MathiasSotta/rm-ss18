@@ -17,17 +17,34 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
     makeAnimals() {
         // using static array here o-O
         let animalNames = [
-            'goose',
-            'goose',
-            'goose',
-            'goose',
-            'goose',
-            // 'elephant',
-            // 'pig',
-            // 'rooster',
-            // 'cow',
-            // 'dog',
-            // 'cat',
+            {
+                key: 'goose',
+                ani: 'goosy',
+            },
+            {
+                key: 'elephant',
+                ani: 'ely',
+            },
+            {
+                key: 'pig',
+                ani: 'pigy',
+            },
+            {
+                key: 'rooster',
+                ani: 'rosty',
+            },
+            {
+                key: 'cow',
+                ani: 'cowy',
+            },
+            {
+                key: 'dog',
+                ani: 'dogy',
+            },            {
+                key: 'cat',
+                ani: 'caty',
+            },
+
         ];
 
         // define static start positions for the animals
@@ -83,9 +100,10 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
             // create 5 random animals from spriteList and set their position
             for (let i = 0; i < 5; i++) {
                 let pickedAnimal = Phaser.Utils.Array.RemoveRandomElement(animalArri);
-                let newAnimal = this.group.create(gameConfig.width/2, gameConfig.height/2, 'animalic', pickedAnimal).setInteractive().setScale(0).setOrigin(0.5).setAlpha(0);
-                newAnimal.key = pickedAnimal;
-                newAnimal.name = pickedAnimal;
+                let newAnimal = this.group.create(gameConfig.width / 2, gameConfig.height / 2, 'animalic', pickedAnimal.key).setInteractive().setScale(0).setOrigin(0.5).setAlpha(0);
+                newAnimal.key = pickedAnimal.key;
+                newAnimal.name = pickedAnimal.key;
+                newAnimal.ani = pickedAnimal.ani;
                 newAnimal.class = 'animal';
                 newAnimal.destinationX = positions[i].x;
                 newAnimal.destinationY = positions[i].y;

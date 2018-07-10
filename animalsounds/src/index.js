@@ -10,10 +10,10 @@ export const gameConfig = {
     height: 600,
     backgroundColor: '#339933',
     scene: [
-        TestScene,
         GameMenuScene,
         HearTheAnimalsScene,
         GuessTheAnimalsScene,
+        TestScene,
 
     ],
     audio: {

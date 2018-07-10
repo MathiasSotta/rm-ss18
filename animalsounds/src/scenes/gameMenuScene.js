@@ -2,6 +2,7 @@ import * as Phaser from "phaser";
 import {GuessTheAnimalsScene} from './guessTheAnimalsScene';
 import {HearTheAnimalsScene} from './hearTheAnimalsScene';
 import {gameConfig} from '../index.js';
+import makeAnimations from '../helper/animations.js';
 
 export class GameMenuScene extends Phaser.Scene {
     constructor(test) {
@@ -27,11 +28,18 @@ export class GameMenuScene extends Phaser.Scene {
         ]);
         this.load.audio('music', 'assets/audio/background_music.mp3');
         //animations
-        this.load.atlas('goos', 'assets/animation/goose.png', 'assets/animation/goose.json');
+        this.load.atlas('goosy', 'assets/animation/goose.png', 'assets/animation/goose.json');
+        this.load.atlas('ely', 'assets/animation/elephant.png', 'assets/animation/elephant.json');
+        this.load.atlas('pigy', 'assets/animation/pig.png', 'assets/animation/pig.json');
+        this.load.atlas('rosty', 'assets/animation/rooster.png', 'assets/animation/rooster.json');
+        this.load.atlas('cowy', 'assets/animation/cow.png', 'assets/animation/cow.json');
+        this.load.atlas('dogy', 'assets/animation/dog.png', 'assets/animation/dog.json');
+        this.load.atlas('caty', 'assets/animation/cat.png', 'assets/animation/cat.json');
 
     }
 
     create() {
+        makeAnimations(this);
         let theScene = this;
         // init game music
         // let music = this.sound.add('music');
