@@ -1,11 +1,10 @@
 import 'phaser';
-import {GameMenuScene} from './gameMenuScene';
 import {HearTheAnimalScene} from './hearTheAnimalsScene';
-import {Animal} from "../objects/Animal";
+import {GameMenuScene} from './gameMenuScene';
 import {AnimalController} from "../objects/AnimalController";
 import {gameConfig} from "../index";
 import * as Phaser from "phaser";
-
+import music from './gameMenuScene';
 
 export class GuessTheAnimalsScene extends Phaser.Scene {
 
@@ -16,13 +15,7 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
     }
 
     preload() {
-        // this.load.audioSprite('sfx', 'assets/audio/animalsounds.json', [
-        //     'assets/audio/animalsounds.ogg',
-        //     'assets/audio/animalsounds.mp3'
-        // ], {
-        //     instances: 4
-        // });
-        // this.load.audio('music', 'assets/audio/background_music.mp3');
+
     }
 
     create() {
@@ -49,6 +42,50 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
         let animalSounds = this.sound.addAudioSprite('animalsounds');
         let gameSounds = this.sound.addAudioSprite('gamesounds');
         // random pick an animal to hear its sound
+
+        // MUSICBUTTON
+        let musicButton = this.add.sprite(35, 30, 'musicbutton', 1).setOrigin(.5).setInteractive().setScale(.6);
+        musicButton.on('pointerup', toggleMusic, this);
+
+        function toggleMusic() {
+
+            // toggle music from sound array
+            for (let sound of this.sound.sounds) {
+
+                if (sound.key === 'music') {
+
+                    if (sound.isPaused) {
+                        sound.resume();
+                        musicButton.setFrame(1);
+                        return;
+                    }
+                    if (sound.isPlaying) {
+                        sound.pause();
+                        musicButton.setFrame(0);
+                        return;
+                    }
+                }
+            }
+        }
+
+        // HOMEBUTTON
+        let homeButton = this.add.sprite(85, 30, 'homebutton', 0).setOrigin(.5).setInteractive().setScale(.6);
+        homeButton.on('pointerup', toggleMenu, this);
+
+        homeButton.on('pointerover', function() {
+            this.setFrame(1);
+        }, homeButton);
+
+        homeButton.on('pointerout', function() {
+            this.setFrame(0);
+        }, homeButton);
+
+        function toggleMenu() {
+            this.scene.launch('GameMenuScene');
+            this.scene.bringToTop();
+            this.scene.stop(this.scene.key);
+        }
+
 
         // PLAYBUTTON
         playButton = this.add.sprite(gameConfig.width / 2, gameConfig.height / 1.75, 'playbutton', 1).setScale(.4).setOrigin(0.5);
@@ -103,6 +140,7 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
             }
         }
 
+        // HANDLER & ANIMATION
         function handleAnimalClicks() {
             console.log(this.name + " clicked");
             hit = (guessThisAnimal === this.key);
@@ -164,7 +202,7 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
             for (let animal of animalSprites) {
                 hideAnimals = theScene.tweens.add({
                     x: playButton.x,
-                    y: playButton.y+20,
+                    y: playButton.y + 20,
                     targets: animal,
                     scaleX: 0,
                     scaleY: 0,
@@ -204,7 +242,7 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
                 anims: animal.ani,
             };
             let animalAnimation = theScene.make.sprite(config);
-            animalAnimation.on('animationcomplete', function(){
+            animalAnimation.on('animationcomplete', function () {
                 animal.setVisible(true);
             });
             animalAnimation.on('animationcomplete', resetAnimals, this);

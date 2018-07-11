@@ -15,7 +15,7 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
     }
 
     makeAnimals() {
-        // using static array here o-O
+
         let animalNames = [
             {
                 key: 'goose',
@@ -112,8 +112,8 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
         else if (sceneKey === 'HearTheAnimalsScene') {
             // create all animals from spriteList
             for (let animal of animalArri) {
-                let newAnimal = this.group.create(positions[0].x, positions[0].y, 'animalic', animal).setScale(.8).setOrigin(.5).setVisible(false);
-                newAnimal.key = animal;
+                let newAnimal = this.group.create(positions[0].x, positions[0].y, 'animalic', animal.key).setScale(.8).setOrigin(.5).setVisible(false);
+                newAnimal.key = animal.key;
                 //newAnimal.name = animal;
                 newAnimal.class = 'animal';
                 newAnimal.setInteractive();

@@ -1,0 +1,30 @@
+{"frames": [
+
+{
+	"filename": "musicoff",
+	"frame": {"x":0,"y":0,"w":70,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":70},
+	"sourceSize": {"w":70,"h":70},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "musicon",
+	"frame": {"x":70,"y":0,"w":70,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":70},
+	"sourceSize": {"w":70,"h":70},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "musicbutton.png",
+	"format": "RGBA8888",
+	"size": {"w":140,"h":70},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:e0c4d0be941234ab1844ab5d55ba611a:06712961b6e7a01d76dbe5de955f8ca0:d74586984f4b710059cffd6302ef49cc$"
+}
+}

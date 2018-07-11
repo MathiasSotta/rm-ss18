@@ -1,0 +1,30 @@
+{"frames": [
+
+{
+	"filename": "homebutton",
+	"frame": {"x":0,"y":0,"w":70,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":70},
+	"sourceSize": {"w":70,"h":70},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "homebutton_over",
+	"frame": {"x":70,"y":0,"w":70,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":70},
+	"sourceSize": {"w":70,"h":70},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "homebutton.png",
+	"format": "RGBA8888",
+	"size": {"w":140,"h":70},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:1349dc2794d3db2e274e74b11495888c:a54fd697e4d542977473a2e95c310faf:89aa6c7676f65f5068b0d0806f592a69$"
+}
+}
