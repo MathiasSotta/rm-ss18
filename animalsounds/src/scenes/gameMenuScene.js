@@ -2,101 +2,139 @@ import * as Phaser from "phaser";
 import {GuessTheAnimalsScene} from './guessTheAnimalsScene';
 import {HearTheAnimalsScene} from './hearTheAnimalsScene';
 import {gameConfig} from '../index.js';
-import makeAnimations from '../helper/animations.js';
 
 export class GameMenuScene extends Phaser.Scene {
     constructor(test) {
         super({
-            key: 'GameMenuScene'
+            key: 'GameMenuScene',
+
         });
 
     }
 
     preload() {
-
     }
 
     create() {
 
+        let theScene = this;
+
         // ToDo: set gameButtons from global loader
         // MUSICBUTTON
-        let musicButton = this.add.sprite(35, 30, 'musicbutton', 1).setOrigin(.5).setInteractive().setScale(.6);
+        let musicButton = this.add.image(35, 30, 'sceneitems', 'homebutton').setOrigin(.5).setInteractive().setScale(.6).setDepth(10);
+        // update state when reentering scene
+        updateMusicButton();
         musicButton.on('pointerup', toggleMusic, this);
+        musicButton.on('pointerover', () => { musicButton.setFrame('musicon_over') });
+        musicButton.on('pointerout', updateMusicButton, this);
 
         function toggleMusic() {
             // toggle music from sound array
             for (let sound of this.sound.sounds) {
-
                 if (sound.key === 'music') {
-
                     if (sound.isPaused) {
                         sound.resume();
-                        musicButton.setFrame(1);
+                        musicButton.setFrame('musicon_on');
                         return;
                     }
-                    if (sound.isPlaying) {
+                    else if (sound.isPlaying) {
                         sound.pause();
-                        musicButton.setFrame(0);
+                        musicButton.setFrame('musicon_off');
+                        return;
+                    }
+                    else if (!sound.isPlaying) {
+                        sound.play();
+                        musicButton.setFrame('musicon_on');
                         return;
                     }
                 }
             }
         }
 
-        this.add.text(gameConfig.width / 2, gameConfig.height / 3.5, 'Animal Sounds', {
-            fill: '#0f0',
-            fontFamily: 'Arial',
-            fontSize: 64,
-            color: '#00ff00'
-        }).setOrigin(0.5);
+        // logo
+        this.add.image(400, 300, 'sceneitems', 'gamemenu_logo');
 
-        // create a group for Game Menu entries
-        let group = this.add.group();
-        group.classType = Phaser.GameObjects.Text;
+        // game buttons
+        let hearButton = this.add.image((gameConfig.width / 2) - 118 - 15, 325, 'sceneitems', 'gamemenu_hearbutton').setInteractive();
+        let guessButton = this.add.image((gameConfig.width / 2) + 118 + 15, 325, 'sceneitems', 'gamemenu_guessbutton').setInteractive();
 
-        // create interactive text object for game 1
-        let text1 = group.create(gameConfig.width / 2, gameConfig.height / 2, 'Hear the animal', {
-            fill: '#0f0',
-            fontFamily: 'Arial',
-            fontSize: 24,
-            color: '#00ff00'
-        }).setOrigin(0.5);
-        text1.setName('text1');
-        text1.setInteractive(new Phaser.Geom.Rectangle(0, 0, text1.width, text1.height), Phaser.Geom.Rectangle.Contains);
-        text1.addListener('pointerup', function (event) {
-            // console.log("text 1 pressed");
+        // hover claims
+        let hearClaim = this.add.image((gameConfig.width / 2), 430, 'sceneitems', 'gamemenu_claimhear').setInteractive().setAlpha(0);
+        let guessClaim = this.add.image((gameConfig.width / 2), 430, 'sceneitems', 'gamemenu_claimguess').setInteractive().setAlpha(0);
+
+        hearButton.on('pointerup', function () {
             this.scene.stop(this.scene.key);
             this.scene.launch('HearTheAnimalsScene');
         }, this);
 
-        // create interactive text object for game 1
-        let text2 = group.create(gameConfig.width / 2, gameConfig.height / 1.8, 'Guess the animal', {
-            fill: '#0f0',
-            fontFamily: 'Arial',
-            fontSize: 24,
-            color: '#00ff00'
-        }).setOrigin(0.5);
-        text2.setName('text2');
-        text2.setInteractive(new Phaser.Geom.Rectangle(0, 0, text2.width, text2.height), Phaser.Geom.Rectangle.Contains);
-        text2.addListener('pointerup', function (event) {
-            // console.log("text 2 pressed");
+        hearButton.on('pointerover', buttonHoverTween, hearButton);
+        hearButton.on('pointerout', buttonOutTween, hearButton);
+
+        guessButton.on('pointerup', function () {
             this.scene.stop(this.scene.key);
             this.scene.launch('GuessTheAnimalsScene');
-            this.scene.bringToTop();
-
         }, this);
 
-        // interactive event on mouseover for Game Menu entries
-        this.input.on('gameobjectover', function (pointer, gameObject) {
-            gameObject.setTint(0x0000ff, 0xffff00, 0xffff00, 0x0000ff);
+        guessButton.on('pointerover', buttonHoverTween, guessButton);
+        guessButton.on('pointerout', buttonOutTween, guessButton);
 
-        });
-        this.input.on('gameobjectout', function (pointer, gameObject) {
-            gameObject.clearTint();
-        });
+        function buttonHoverTween() {
+            theScene.tweens.add({
+                targets: this,
+                scaleX: 1.1,
+                scaleY: 1.1,
+                alpha: 1,
+                duration: 350,
+                ease: 'Power2',
+            });
+
+            theScene.tweens.add({
+                targets: (this.frame.name === 'gamemenu_hearbutton') ? hearClaim : guessClaim,
+                alpha: 1,
+                duration: 250,
+                ease: 'Power2',
+            });
+        }
+
+        function buttonOutTween() {
+            theScene.tweens.add({
+                targets: this,
+                scaleX: 1,
+                scaleY: 1,
+                duration: 350,
+                ease: 'Power2',
+            });
+
+            theScene.tweens.add({
+                targets: (this.frame.name === 'gamemenu_hearbutton') ? hearClaim : guessClaim,
+                alpha: 0,
+                duration: 250,
+                ease: 'Power2',
+            });
+        }
+
+        function updateMusicButton() {
+            // toggle state for music button
+            for (let sound of theScene.sound.sounds) {
+
+                if (sound.key === 'music') {
+
+                    if (sound.isPaused) {
+                        musicButton.setFrame('musicon_off');
+                        return;
+                    }
+                    else if (sound.isPlaying) {
+                        musicButton.setFrame('musicon_on');
+                        return;
+                    }
+                    else if (!sound.isPlaying) {
+                        musicButton.setFrame('musicon_off');
+                        return;
+                    }
+                }
+            }
+        }
 
     }
-
 }
-
 

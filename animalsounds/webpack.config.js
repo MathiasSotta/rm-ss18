@@ -1,7 +1,7 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
-// const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -34,7 +34,7 @@ module.exports = {
     },
 
     plugins: [
-        // new UglifyJsPlugin(),
+        new UglifyJsPlugin(),
         new CopyWebpackPlugin([
             {
                 from: path.resolve(__dirname, 'index.html'),
@@ -54,4 +54,4 @@ module.exports = {
             filename: 'production-dependencies.bundle.js'
         }),
     ],
-}
+};

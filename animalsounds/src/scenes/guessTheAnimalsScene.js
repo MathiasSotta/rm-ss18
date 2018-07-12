@@ -12,6 +12,7 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
         super({
             key: 'GuessTheAnimalsScene'
         });
+
     }
 
     preload() {
@@ -19,6 +20,8 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
     }
 
     create() {
+        //console.log('GuessTheAnimalsScene started');
+
         let theScene = this;
         let playButton;
         let guessThisAnimal;
@@ -26,29 +29,35 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
         let animalsInteractive = false;
         let hit;
 
-        console.log('GuessTheAnimalsScene started');
-        console.log(this);
-
         // let the dogs out
         let animals = new AnimalController({scene: this});
         let animalSprites = animals.getGroup().getChildren();
         playAnimalSpritesTween(animalSprites);
 
+        // init background
+        let bgTop = this.add.image((gameConfig.width / 2), 48, 'sceneitems', 'gamemenu_grad').setOrigin(0.5);
+        let bgBottom = this.add.image((gameConfig.width / 2), gameConfig.height - 48, 'sceneitems', 'gamemenu_grad').setOrigin(0.5).setFlipY(true);
+
         // init score vars
         let score = 0;
-        let scoreText = this.add.text(gameConfig.width * .9, gameConfig.height * .9, 'Score: 0', {fill: '#df0'}).setOrigin(.5);
+        let scoreText = this.add.text(gameConfig.width * .9, gameConfig.height * .05, 'Score: 0', {fill: '#ffa21e'}).setOrigin(.5).setFontStyle('bold').setFontFamily('Verdana');
 
         // set sounds
         let animalSounds = this.sound.addAudioSprite('animalsounds');
         let gameSounds = this.sound.addAudioSprite('gamesounds');
-        // random pick an animal to hear its sound
 
         // MUSICBUTTON
-        let musicButton = this.add.sprite(35, 30, 'musicbutton', 1).setOrigin(.5).setInteractive().setScale(.6);
+        let musicButton = this.add.image(35, 30, 'sceneitems', 'musicon_off').setOrigin(.5).setInteractive().setScale(.6);
         musicButton.on('pointerup', toggleMusic, this);
+        musicButton.on('pointerover', () => {
+            musicButton.setFrame('musicon_over')
+        });
+        musicButton.on('pointerout', updateMusicButton, this);
+        // update state when reentering scene
+        updateMusicButton();
 
         function toggleMusic() {
-
+            updateMusicButton();
             // toggle music from sound array
             for (let sound of this.sound.sounds) {
 
@@ -56,12 +65,17 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
 
                     if (sound.isPaused) {
                         sound.resume();
-                        musicButton.setFrame(1);
+                        musicButton.setFrame('musicon_on');
                         return;
                     }
-                    if (sound.isPlaying) {
+                    else if (sound.isPlaying) {
                         sound.pause();
-                        musicButton.setFrame(0);
+                        musicButton.setFrame('musicon_off');
+                        return;
+                    }
+                    else if (!sound.isPlaying) {
+                        sound.play();
+                        musicButton.setFrame('musicon_on');
                         return;
                     }
                 }
@@ -69,15 +83,15 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
         }
 
         // HOMEBUTTON
-        let homeButton = this.add.sprite(85, 30, 'homebutton', 0).setOrigin(.5).setInteractive().setScale(.6);
+        let homeButton = this.add.image(85, 30, 'sceneitems', 'homebutton').setInteractive().setOrigin(.5).setScale(.6);
         homeButton.on('pointerup', toggleMenu, this);
 
-        homeButton.on('pointerover', function() {
-            this.setFrame(1);
+        homeButton.on('pointerover', function () {
+            this.setFrame('homebutton_over');
         }, homeButton);
 
-        homeButton.on('pointerout', function() {
-            this.setFrame(0);
+        homeButton.on('pointerout', function () {
+            this.setFrame('homebutton');
         }, homeButton);
 
         function toggleMenu() {
@@ -86,9 +100,8 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
             this.scene.stop(this.scene.key);
         }
 
-
         // PLAYBUTTON
-        playButton = this.add.sprite(gameConfig.width / 2, gameConfig.height / 1.75, 'playbutton', 1).setScale(.4).setOrigin(0.5);
+        playButton = this.add.image((gameConfig.width / 2), (gameConfig.height / 1.9), 'sceneitems', 'playbutton_default').setScale(.5).setOrigin(0.5);
         playButtonTween(playButton);
 
         function playButtonSetInteractive() {
@@ -97,18 +110,18 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
 
         playButton.on('pointerover', function () {
             if (!animalSounds.isPlaying) {
-                this.setFrame(2);
+                this.setFrame('playbutton_hover');
             }
         });
 
         playButton.on('pointerout', function () {
             if (!animalSounds.isPlaying) {
-                this.setFrame(1);
+                this.setFrame('playbutton_default');
             }
         });
 
         playButton.on('pointerdown', playButtonActivated, playButton);
-        animalSounds.on('ended', onSoundEnded, animalSounds);
+        animalSounds.on('ended', onSoundEnded, playButton);
 
         function playButtonActivated() {
             // create a new animalsound to guess, else use the existing one
@@ -120,20 +133,19 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
                 makeAnimalsInteractive();
                 animalsInteractive = true;
             }
-            this.setFrame(0);
-            console.log("Playbtn clicked + Looking for: " + guessThisAnimal);
+            this.setFrame('playbutton_active');
+            //console.log("Playbtn clicked + Looking for: " + guessThisAnimal);
             // console.log(this.scene);
             animalSounds.pause();
             animalSounds.play(guessThisAnimal);
         }
 
         function onSoundEnded() {
-            playButton.setFrame(1);
+            playButton.setFrame('playbutton_default');
         }
 
         function makeAnimalsInteractive() {
             for (let i = 0; i < animalSprites.length; i++) {
-                console.log(i);
                 // get interactive animals
                 animalSprites[i].setInteractive();
                 animalSprites[i].on('pointerup', handleAnimalClicks, animalSprites[i]);
@@ -142,7 +154,7 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
 
         // HANDLER & ANIMATION
         function handleAnimalClicks() {
-            console.log(this.name + " clicked");
+            //console.log(this.name + " clicked");
             hit = (guessThisAnimal === this.key);
 
             // try again
@@ -159,7 +171,7 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
                     animalSounds.pause();
                 }
                 playButton.disableInteractive();
-                console.log("=== success");
+                //console.log("=== success");
                 score += 100;
                 scoreText.setText('Score: ' + score);
                 gameSounds.play('success');
@@ -218,7 +230,7 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
                         // create some new animals
                         animals.makeAnimals();
                         // set a new random target
-                        playButton.setFrame(1);
+                        playButton.setFrame('playbutton_default');
                         playButton.setInteractive();
                         resetPlayButton = true;
                         animalsInteractive = false;
@@ -231,7 +243,7 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
         }
 
         function playAnimalSpritesAnimation(animal) {
-            console.log(animal);
+            // console.log(animal);
             animal.setVisible(false);
 
             let config = {
@@ -249,17 +261,32 @@ export class GuessTheAnimalsScene extends Phaser.Scene {
 
         }
 
+        function updateMusicButton() {
+            // toggle state for music button
+            for (let sound of theScene.sound.sounds) {
+
+                if (sound.key === 'music') {
+
+                    if (sound.isPaused) {
+                        musicButton.setFrame('musicon_off');
+                        return;
+                    }
+                    else if (sound.isPlaying) {
+                        musicButton.setFrame('musicon_on');
+                        return;
+                    }
+                    else if (!sound.isPlaying) {
+                        musicButton.setFrame('musicon_off');
+                        return;
+                    }
+                }
+            }
+        }
     }
 
-
-    /*
-        update(time,delta) {
-            console.log(this.animals.soundIsPlaying());
-        }
-    */
-
-
 }
+
+
 
 
 

@@ -2,10 +2,6 @@ import 'phaser';
 import {gameConfig} from "../index";
 import {AnimalController} from "../objects/AnimalController";
 
-let animalSounds;
-let arrowLeft;
-let arrowRight;
-
 export class HearTheAnimalsScene extends Phaser.Scene {
     constructor(test) {
         super({
@@ -17,16 +13,26 @@ export class HearTheAnimalsScene extends Phaser.Scene {
     }
 
     create() {
+        console.log('HearTheAnimalsScene started');
 
         let theScene = this;
-        animalSounds = this.sound.addAudioSprite('animalsounds');
+        let animalSounds = this.sound.addAudioSprite('animalsounds');
 
-        console.log('HearTheAnimalsScene started');
-        console.log(this.scene);
+        let arrowLeft;
+        let arrowRight;
+        let animalAnimation;
+        let animationRunning = false;
 
         // MUSICBUTTON
-        let musicButton = this.add.sprite(35, 30, 'musicbutton', 1).setOrigin(.5).setInteractive().setScale(.6);
+        let musicButton = this.add.image(35, 30, 'sceneitems', 'musicon_off').setOrigin(.5).setInteractive().setScale(.6);
         musicButton.on('pointerup', toggleMusic, this);
+        musicButton.on('pointerover', () => {
+            musicButton.setFrame('musicon_over')
+        });
+        musicButton.on('pointerout', updateMusicButton, this);
+
+        // update state when reentering scene
+        updateMusicButton();
 
         function toggleMusic() {
             // toggle music from sound array
@@ -36,12 +42,17 @@ export class HearTheAnimalsScene extends Phaser.Scene {
 
                     if (sound.isPaused) {
                         sound.resume();
-                        musicButton.setFrame(1);
+                        musicButton.setFrame('musicon_on');
                         return;
                     }
-                    if (sound.isPlaying) {
+                    else if (sound.isPlaying) {
                         sound.pause();
-                        musicButton.setFrame(0);
+                        musicButton.setFrame('musicon_off');
+                        return;
+                    }
+                    else if (!sound.isPlaying) {
+                        sound.play();
+                        musicButton.setFrame('musicon_on');
                         return;
                     }
                 }
@@ -49,15 +60,15 @@ export class HearTheAnimalsScene extends Phaser.Scene {
         }
 
         // HOMEBUTTON
-        let homeButton = this.add.sprite(85, 30, 'homebutton', 0).setOrigin(.5).setInteractive().setScale(.6);
+        let homeButton = this.add.image(85, 30, 'sceneitems', 'homebutton').setInteractive().setOrigin(.5).setScale(.6);
         homeButton.on('pointerup', toggleMenu, this);
 
-        homeButton.on('pointerover', function() {
-            this.setFrame(1);
+        homeButton.on('pointerover', function () {
+            this.setFrame('homebutton_over');
         }, homeButton);
 
-        homeButton.on('pointerout', function() {
-            this.setFrame(0);
+        homeButton.on('pointerout', function () {
+            this.setFrame('homebutton');
         }, homeButton);
 
         function toggleMenu() {
@@ -70,14 +81,15 @@ export class HearTheAnimalsScene extends Phaser.Scene {
         let animals = new AnimalController({scene: this});
         let animalGroup = animals.getGroup();
         let animalSprites = animalGroup.getChildren();
+        makeAnimalsInteractive();
         Phaser.Utils.Array.Shuffle(animalSprites);
         let currentAnimal = Phaser.Utils.Array.GetFirst(animalSprites);
-        console.log(currentAnimal);
+        // console.log(currentAnimal);
         currentAnimal.setVisible(true);
 
         // Set Arrows for animal selection
-        arrowLeft = this.add.sprite((gameConfig.width / 5), gameConfig.height / 2, 'arrow', 1).setScale(.4).setInteractive().setOrigin(0.5).setFlipX(true);
-        arrowRight = this.add.sprite((gameConfig.width / 5) * 4, gameConfig.height / 2, 'arrow', 1).setScale(.4).setInteractive().setOrigin(0.5);
+        arrowLeft = this.add.image((gameConfig.width / 5), gameConfig.height / 2,  'sceneitems', 'arrow_default').setInteractive().setScale(.4).setOrigin(0.5).setFlipX(true);
+        arrowRight = this.add.image((gameConfig.width / 5) * 4, gameConfig.height / 2, 'sceneitems', 'arrow_default').setScale(.4).setInteractive().setOrigin(0.5);
 
         arrowLeft.on('pointerdown', rotateAnimals, arrowLeft);
         arrowLeft.on('pointerover', arrowHover, arrowLeft);
@@ -91,17 +103,17 @@ export class HearTheAnimalsScene extends Phaser.Scene {
         animalSounds.on('play', disableArrows, this);
 
         // make Animals interactive
-        for(let i=0; i<animalSprites.length; i++ ){
+        for (let i = 0; i < animalSprites.length; i++) {
             animalSprites[i].on('pointerup', playSound, animalSprites[i]);
         }
 
         // callbacks
         function arrowHover() {
-            this.setFrame(2);
+            this.setFrame('arrow_hover');
         }
 
         function arrowOut() {
-            this.setFrame(1);
+            this.setFrame('arrow_default');
         }
 
         function disableArrows() {
@@ -110,6 +122,7 @@ export class HearTheAnimalsScene extends Phaser.Scene {
             arrowLeft.setAlpha(.5);
             arrowRight.setAlpha(.5);
         }
+
         function resetArrows() {
             arrowLeft.setInteractive(true).setAlpha(1);
             arrowRight.setInteractive(true).setAlpha(1);
@@ -118,22 +131,78 @@ export class HearTheAnimalsScene extends Phaser.Scene {
         function playSound() {
             animalSounds.pause();
             animalSounds.play(this.key);
-            console.log(animalSounds.isPlaying);
+            //console.log(animalSounds.isPlaying);
         }
 
         function rotateAnimals() {
-            console.log(this);
+            //console.log(this);
+
+            // if an animation is currently active it is destroyed
+            if (animationRunning) {
+                animalAnimation.destroy();
+            }
+
             animalSprites[0].setVisible(false).setInteractive(false);
             let animalRotate = this === arrowLeft ? Phaser.Utils.Array.RotateLeft(animalSprites) : Phaser.Utils.Array.RotateRight(animalSprites);
             animalSprites[animalSprites.length - 1].setVisible(false);
             animalSprites[0].setVisible(true).setInteractive(true);
-            console.log(animalSprites[0].name);
             resetArrows();
         }
 
+        function makeAnimalsInteractive() {
+            for (let i = 0; i < animalSprites.length; i++) {
+                // get interactive animals
+                animalSprites[i].setInteractive();
+                animalSprites[i].on('pointerup', playAnimalSpritesAnimation, animalSprites[i]);
+            }
+        }
+
+        function playAnimalSpritesAnimation(animal) {
+            console.log(this);
+            this.setVisible(false);
+
+            let config = {
+                key: this.ani,
+                x: this.x,
+                y: this.y,
+                scale: 0.8,
+                anims: this.ani,
+            };
+
+            animalAnimation = this.scene.make.sprite(config);
+            animationRunning = true;
+            animalAnimation.on('animationcomplete', function () {
+                this.setVisible(true);
+                animalAnimation.destroy();
+            }, this);
+
+        }
+
+        function updateMusicButton() {
+            // toggle state for music button
+            for (let sound of theScene.sound.sounds) {
+
+                if (sound.key === 'music') {
+
+                    if (sound.isPaused) {
+                        musicButton.setFrame('musicon_off');
+                        return;
+                    }
+                    else if (sound.isPlaying) {
+                        musicButton.setFrame('musicon_on');
+                        return;
+                    }
+                    else if (!sound.isPlaying) {
+                        musicButton.setFrame('musicon_off');
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     update(time, delta) {
 
     }
 }
+

@@ -1,0 +1,20 @@
+{
+  "resources": [
+    "gamesounds.ogg",
+    "gamesounds.m4a",
+    "gamesounds.mp3",
+    "gamesounds.ac3"
+  ],
+  "spritemap": {
+    "success": {
+      "start": 0,
+      "end": 1.1308163265306121,
+      "loop": false
+    },
+    "wrong": {
+      "start": 3,
+      "end": 3.2195238095238095,
+      "loop": false
+    }
+  }
+}

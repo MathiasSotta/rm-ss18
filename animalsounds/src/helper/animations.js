@@ -68,4 +68,5 @@ export default function makeAnimations(scene) {
     };
     scene.anims.create(animConfig);
 
+
 }

@@ -4,7 +4,7 @@ import makeAnimations from "../helper/animations";
 export class BootScene extends Phaser.Scene {
     constructor(test) {
         super({
-            key: 'BootScene'
+            key: 'BootScene',
         });
     }
 
@@ -28,6 +28,7 @@ export class BootScene extends Phaser.Scene {
 
         // preload assets
         this.load.atlas('animalic', 'assets/animals.png', 'assets/animals.json');
+        this.load.atlas('sceneitems', 'assets/sceneitems.png', 'assets/sceneitems.json');
         this.load.audioSprite('animalsounds', 'assets/audio/animalsounds.json', [
             'assets/audio/animalsounds.ogg',
             'assets/audio/animalsounds.mp3'
@@ -36,10 +37,6 @@ export class BootScene extends Phaser.Scene {
             'assets/audio/gamesounds.ogg',
             'assets/audio/gamesounds.mp3'
         ]);
-        this.load.spritesheet('playbutton', 'assets/playbutton.png', {frameWidth: 300, frameHeight: 300});
-        this.load.spritesheet('arrow', 'assets/arrow.png', {frameWidth: 150, frameHeight: 400});
-        this.load.spritesheet('musicbutton', 'assets/musicbutton.png', {frameWidth: 70, frameHeight: 70});
-        this.load.spritesheet('homebutton', 'assets/homebutton.png', {frameWidth: 70, frameHeight: 70});
 
         this.load.audio('music', 'assets/audio/background_music.mp3');
         //animations
@@ -55,11 +52,9 @@ export class BootScene extends Phaser.Scene {
 
     create() {
         makeAnimations(this);
-
         // init game music
         let music = this.sound.add('music');
         music.loop = true;
-        music.play();
 
     }
 

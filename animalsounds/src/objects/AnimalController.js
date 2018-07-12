@@ -1,8 +1,9 @@
 import {Animal} from "./Animal";
 import {gameConfig} from "../index";
+import {playAnimalSpritesAnimation} from "../scenes/hearTheAnimalsScene";
 
-// put all animals into an array
-//let animalArri = [];
+let previousAnimal;
+let counter = 0;
 
 export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
 
@@ -40,7 +41,7 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
             {
                 key: 'dog',
                 ani: 'dogy',
-            },            {
+            }, {
                 key: 'cat',
                 ani: 'caty',
             },
@@ -74,11 +75,11 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
         let h = gameConfig.height;
         if (theScene.sys.config.key === 'GuessTheAnimalsScene') {
             p = [
-                {x: (w / 2), y: h / 4}, //center top position
-                {x: (w / 5) * 4, y: (h / 4) * 1.9},// right middle
+                {x: (w / 2), y: (h / 4) * .8}, //center top position
+                {x: (w / 5) * 4, y: (h / 4) * 1.8},// right middle
                 {x: (w / 5) * 3.5, y: (h / 4) * 3.2}, // right bottom
                 {x: (w / 5) * 1.5, y: (h / 4) * 3.2}, // left bottom
-                {x: w / 5, y: (h / 4) * 1.9} // left-middle
+                {x: w / 5, y: (h / 4) * 1.8} // left-middle
             ];
         }
         else if (theScene.sys.config.key === 'HearTheAnimalsScene') {
@@ -100,7 +101,7 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
             // create 5 random animals from spriteList and set their position
             for (let i = 0; i < 5; i++) {
                 let pickedAnimal = Phaser.Utils.Array.RemoveRandomElement(animalArri);
-                let newAnimal = this.group.create(gameConfig.width / 2, gameConfig.height / 2, 'animalic', pickedAnimal.key).setInteractive().setScale(0).setOrigin(0.5).setAlpha(0);
+                let newAnimal = this.group.create(gameConfig.width / 2, gameConfig.height / 2, 'animalic', pickedAnimal.key).setInteractive().setScale(0).setOrigin(0.5).setAlpha(0).setDepth(10);
                 newAnimal.key = pickedAnimal.key;
                 newAnimal.name = pickedAnimal.key;
                 newAnimal.ani = pickedAnimal.ani;
@@ -112,20 +113,32 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
         else if (sceneKey === 'HearTheAnimalsScene') {
             // create all animals from spriteList
             for (let animal of animalArri) {
-                let newAnimal = this.group.create(positions[0].x, positions[0].y, 'animalic', animal.key).setScale(.8).setOrigin(.5).setVisible(false);
+                let newAnimal = this.group.create(positions[0].x, positions[0].y, 'animalic', animal.key).setScale(.8).setOrigin(.5).setVisible(false).setDepth(10);
                 newAnimal.key = animal.key;
+                newAnimal.name = animal.key;
+                newAnimal.ani = animal.ani;
                 //newAnimal.name = animal;
                 newAnimal.class = 'animal';
                 newAnimal.setInteractive();
-                newAnimal.on('pointerup', function () {
-                    console.log("animal clicked");
-                });
+
             }
         }
     }
 
     randomPickAnimal() {
         let pickRandom = Phaser.Utils.Array.GetRandom(this.animals.getChildren());
+        if (counter > 0) {
+            if(previousAnimal.key === pickRandom.key) {
+                //console.log("equal:" + previousAnimal.key);
+                // try again
+                pickRandom = Phaser.Utils.Array.GetRandom(this.animals.getChildren());
+                previousAnimal = pickRandom;
+                return pickRandom.key;
+            }
+        }
+        previousAnimal = pickRandom;
+        counter++;
+
         return pickRandom.key;
     };
 
@@ -140,4 +153,6 @@ export class AnimalController extends Phaser.GameObjects.GameObjectFactory {
     soundIsPlaying() {
         return this.scene.sound.duration;
     }
+
+
 }

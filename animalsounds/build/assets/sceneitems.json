@@ -1,0 +1,165 @@
+{"frames": [
+
+{
+	"filename": "arrow_active",
+	"frame": {"x":600,"y":471,"w":150,"h":400},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":400},
+	"sourceSize": {"w":150,"h":400},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "arrow_default",
+	"frame": {"x":0,"y":871,"w":150,"h":400},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":400},
+	"sourceSize": {"w":150,"h":400},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "arrow_hover",
+	"frame": {"x":750,"y":471,"w":150,"h":400},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":400},
+	"sourceSize": {"w":150,"h":400},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "gamemenu_claimguess",
+	"frame": {"x":0,"y":0,"w":384,"h":42},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":384,"h":42},
+	"sourceSize": {"w":384,"h":42},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "gamemenu_claimhear",
+	"frame": {"x":384,"y":0,"w":377,"h":43},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":377,"h":43},
+	"sourceSize": {"w":377,"h":43},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "gamemenu_grad",
+	"frame": {"x":140,"y":70,"w":800,"h":101},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":800,"h":101},
+	"sourceSize": {"w":800,"h":101},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "gamemenu_guessbutton",
+	"frame": {"x":0,"y":171,"w":236,"h":126},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":236,"h":126},
+	"sourceSize": {"w":236,"h":126},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "gamemenu_hearbutton",
+	"frame": {"x":236,"y":171,"w":236,"h":127},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":236,"h":127},
+	"sourceSize": {"w":236,"h":127},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "gamemenu_logo",
+	"frame": {"x":150,"y":871,"w":800,"h":600},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":800,"h":600},
+	"sourceSize": {"w":800,"h":600},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "homebutton",
+	"frame": {"x":831,"y":0,"w":70,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":70},
+	"sourceSize": {"w":70,"h":70},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "homebutton_over",
+	"frame": {"x":0,"y":70,"w":70,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":70},
+	"sourceSize": {"w":70,"h":70},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "musicon_off",
+	"frame": {"x":70,"y":70,"w":70,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":70},
+	"sourceSize": {"w":70,"h":70},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "musicon_on",
+	"frame": {"x":901,"y":0,"w":70,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":70},
+	"sourceSize": {"w":70,"h":70},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "musicon_over",
+	"frame": {"x":761,"y":0,"w":70,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":70},
+	"sourceSize": {"w":70,"h":70},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "playbutton_active",
+	"frame": {"x":300,"y":471,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "playbutton_default",
+	"frame": {"x":0,"y":471,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "playbutton_hover",
+	"frame": {"x":472,"y":171,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "sceneitems.png",
+	"format": "RGBA8888",
+	"size": {"w":971,"h":1471},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:57a822b4ba08b9ccf0b0daa38ef7746a:be862ef72684d070272e2ce636b55b6a:5d0baff07e149fc806f0919a4cb44b2f$"
+}
+}

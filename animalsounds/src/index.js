@@ -10,6 +10,7 @@ export const gameConfig = {
     width: 800,
     height: 600,
     backgroundColor: '#339933',
+    //backgroundColor: '#ffffff',
     scene: [
         BootScene,
         GameMenuScene,
@@ -22,7 +23,6 @@ export const gameConfig = {
     animalspriteWidth: 300,
     animalspriteHeight: 300,
 };
-
 
 
 new Phaser.Game(gameConfig);
